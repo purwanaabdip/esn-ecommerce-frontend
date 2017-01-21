@@ -1,3 +1,4 @@
 Backend/node_modules/
 Frontend/app/bower_components/
 Frontend/node_modules/
+Frontend/app/bundle.js

@@ -1,0 +1,13 @@
+#content {
+	padding: 20px;
+}
+
+.ui.dropdown .menu>.divider {
+    border-top: 1px solid rgba(34,36,38,.1);
+    height: 0;
+    margin: 0; 
+}
+
+.card .content .description, p {
+	text-align: justify;
+}

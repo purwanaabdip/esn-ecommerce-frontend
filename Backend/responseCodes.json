@@ -1,0 +1,22 @@
+{
+	"MDB0001": {
+		"type": "success",
+		"message": "Successfully fetched",
+		"code": "MDB0001"
+	},
+	"MDB0002": {
+		"type": "success",
+		"message": "Successfully created",
+		"code": "MDB0002"
+	},
+	"MDB0003": {
+		"type": "success",
+		"message": "Successfully updated",
+		"code": "MDB0003"
+	},
+	"MDB0004": {
+		"type": "success",
+		"message": "Successfully deleted",
+		"code": "MDB0004"
+	}
+}

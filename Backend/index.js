@@ -121,12 +121,15 @@ app.get('/items', function(req, res) {
 	});
 });
 
-app.get('/items/:itemId', function(req, res) {
-	Items.where('_id', ObjectId(req.params.itemId)).find(function(err, items) {
+app.get('/item/:itemId', function(req, res) {
+	Items.where('_id', ObjectId(req.params.itemId)).findOne(function(err, items) {
 		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
+			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 			if (err) res.send(err);
 			else {
-				res.send(items);
+				response.data = items;
+				response.notification = codeDictionary.MDB0001;
+				res.send(response);
 			}
 		});
 	});

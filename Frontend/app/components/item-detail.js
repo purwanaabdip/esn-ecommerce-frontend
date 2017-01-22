@@ -9,7 +9,7 @@ import ButtonProcess from './button-process';
 export default class ItemDetail extends React.Component {
 	render() {
 		return (
-			<div className="ui modal" id={this.props.id}>
+			<div className="ui" id={this.props.id}>
 				<i className="icon close"></i>
 				<div className="image content">
 					<div className="ui stackable grid">

@@ -8,6 +8,7 @@ export function createItem(item) {
 }
 
 export function getItems() {
+    dispatcher.dispatch({type: 'xhr_start'});
 	const url = 'http://localhost:3000/items';
 	var response = {};
     let xhr = new XMLHttpRequest();

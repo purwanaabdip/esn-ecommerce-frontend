@@ -13,36 +13,52 @@ import * as ItemActions from '../actions/item-actions'
 export default class Home extends React.Component {
 	constructor() {
 		super();
+		this.getItems = this.getItems.bind(this);
+		this.refresh = this.refresh.bind(this);
 		this.state = {
-			items: ItemStore.getAll()
+			items: ItemStore.getItems(),
+			loading: ItemStore.getState()
 		};
 	}
+
 	componentWillMount() {
-		ItemStore.on('change', () => {
-			this.setState({
-				items: ItemStore.getAll()
-			});
-			console.log(this.state);
+		ItemStore.on('change', this.refresh);
+	}
+
+	componentDidMount() {
+		this.getItems();
+	}
+
+	componentWillUnmount() {
+		ItemStore.unbindListener('change', this.refresh);
+	}
+
+	refresh() {
+		this.setState({
+			items: ItemStore.getItems(),
+			loading: ItemStore.getState()
 		});
 	}
+
 	getItems() {
 		ItemActions.getItems();
 	}
-    render() {
-    	const { items } = this.state;
-    	// console.log(this.state);
 
-    	// const ItemComponents = items.map((item) => {
-    	// 	return <h1>{item.data}</h1>
-    	// });
+    render() {
+    	// Iterate through all items to make Item components
+    	const ItemComponents = this.state.items.map((item) => {
+    		return <Item key={item._id} id={item._id} src={"../themes/default/assets/images/" + item.data.itemImage} name={item.data.itemName} price={item.data.itemPrice} description={item.data.itemDescription}/>
+    	});
+    	// const Loader = <div className="ui active dimmer"><div className="ui indeterminate text loader">Preparing Files</div></div>
         return (
         	<div className="ui container">
 	        	<div className="ui top attached block header">
 	        		<Breadcrumb title="Home" />
+	            	<button className="ui right" onClick={this.getItems.bind(this)}>Get all</button>
 	        	</div>
 	        	<div className="ui bottom attached segment">
 		            <div className="ui special four stackable doubling cards">
-		            	<button onClick={this.getItems.bind(this)}>Get all</button>
+		            	{ItemComponents}
 		            </div>
 		        </div>
 	        </div>

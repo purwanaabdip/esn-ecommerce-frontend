@@ -9,27 +9,28 @@ class ItemStore extends EventEmitter {
 	constructor() {
 		super()
 		this.items = [];
+		this.loading = false;
 	}
 
-	createItem(item) {
-		this.items.push({
-			item
-		});
-		this.emit('change');
-	}
-
-	getAll() {
+	getItems() {
 		return this.items;
+	}
+
+	getState() {
+		return this.loading;
 	}
 
 	handleActions(action) {
 		switch(action.type) {
-			case 'create_item': {
-				this.createItem(action.text);
+			case 'xhr_start': {
+				this.loading = true;
+				this.emit('change_state');
 			}
 			case 'get_items': {
 				this.items = action.data;
+				this.loading = false;
 				this.emit('change');
+				this.emit('change_state');
 			}
 		}
 	}

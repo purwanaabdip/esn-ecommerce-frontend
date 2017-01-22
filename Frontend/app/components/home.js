@@ -15,29 +15,20 @@ export default class Home extends React.Component {
 		super();
 		this.getItems = this.getItems.bind(this);
 		this.refresh = this.refresh.bind(this);
-		this.state = {
-			items: ItemStore.getItems(),
-			loading: ItemStore.getState()
-		};
+		this.state = ItemStore.getState();
 	}
 
 	componentWillMount() {
 		ItemStore.on('change', this.refresh);
-	}
-
-	componentDidMount() {
-		this.getItems();
+		ItemActions.getItems();
 	}
 
 	componentWillUnmount() {
-		ItemStore.unbindListener('change', this.refresh);
+		ItemStore.removeListener('change', this.refresh);
 	}
 
 	refresh() {
-		this.setState({
-			items: ItemStore.getItems(),
-			loading: ItemStore.getState()
-		});
+		this.setState(ItemStore.getState());
 	}
 
 	getItems() {

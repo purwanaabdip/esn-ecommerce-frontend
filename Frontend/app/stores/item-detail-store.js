@@ -1,17 +1,17 @@
 // ================================
 // Created by Eka Setya Nugraha.
-// Copyright 1/21/2017.
+// Copyright 1/22/2017.
 // ================================
 import { EventEmitter } from 'events';
-import dispatcher from '../dispatcher'
+import dispatcher from '../dispatcher';
 
-class ItemStore extends EventEmitter {
+class ItemDetailStore extends EventEmitter {
 	constructor() {
 		super()
 		this.state = {
-			items: [],
+			item: {},
 			loading: false
-		}
+		};
 	}
 
 	getState() {
@@ -25,8 +25,8 @@ class ItemStore extends EventEmitter {
 				this.emit('change');
 				break;
 			}
-			case 'get_items': {
-				this.state.items = action.data;
+			case 'get_item': {
+				this.state.item = action.data;
 				this.state.loading = false;
 				this.emit('change');
 				break;
@@ -35,8 +35,8 @@ class ItemStore extends EventEmitter {
 	}
 }
 
-const itemStore = new ItemStore;
-dispatcher.register(itemStore.handleActions.bind(itemStore));
+const itemDetailStore = new ItemDetailStore;
+dispatcher.register(itemDetailStore.handleActions.bind(itemDetailStore));
 window.dispatcher = dispatcher;
 
-export default itemStore;
+export default itemDetailStore;

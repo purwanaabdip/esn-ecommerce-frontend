@@ -20,7 +20,7 @@ gulp.task('build', function () {
 });
 
 gulp.task('watch', ['build'], function () {
-    gulp.watch(['app/components/*.js', 'app/stores/*.js'], ['build']);
+    gulp.watch(['app/components/*.js', 'app/stores/*.js', 'app/actions/*.js'], ['build']);
 });
 
 gulp.task('default', ['watch', 'serve']);

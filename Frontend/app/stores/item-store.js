@@ -3,27 +3,40 @@
 // Copyright 1/21/2017.
 // ================================
 import { EventEmitter } from 'events';
+import dispatcher from '../dispatcher'
 
 class ItemStore extends EventEmitter {
 	constructor() {
 		super()
 		this.items = [];
 	}
-	getAll(cb) {
-		const url = 'http://localhost:3000/items';
-	    let xhr = new XMLHttpRequest();
-	    xhr.open('GET', url); // true for asynchronous
-	    xhr.send();
-	    xhr.onreadystatechange = function() {
-	        if (xhr.readyState == 4 && xhr.status == 200) {
-	        	let response = JSON.parse(xhr.responseText);
-	            this.items = response.data;
-			    cb(this.items);
-	        }
-	    }
+
+	createItem(item) {
+		this.items.push({
+			item
+		});
+		this.emit('change');
+	}
+
+	getAll() {
+		return this.items;
+	}
+
+	handleActions(action) {
+		switch(action.type) {
+			case 'create_item': {
+				this.createItem(action.text);
+			}
+			case 'get_items': {
+				this.items = action.data;
+				this.emit('change');
+			}
+		}
 	}
 }
 
 const itemStore = new ItemStore;
+dispatcher.register(itemStore.handleActions.bind(itemStore));
+window.dispatcher = dispatcher;
 
 export default itemStore;

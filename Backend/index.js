@@ -48,6 +48,7 @@ response.api = api;
 var Users = mongoose.model('users');
 app.get('/users', function(req, res) {
 	Users.find(function(err, users) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -59,12 +60,15 @@ app.get('/users', function(req, res) {
 	});
 });
 
-app.get('/users/:userId', function(req, res) {
-	Users.find({_id: req.params.userId}, function(err, users) {
+app.get('/user/:userId', function(req, res) {
+	Users.findOne({_id: req.params.userId}, function(err, users) {
 		Users.populate(users, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
+			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 			if (err) res.send(err);
 			else {
-				res.send(users);
+				response.data = users;
+				response.notification = codeDictionary.MDB0001;
+				res.send(response);
 			}
 		});
 	});
@@ -76,6 +80,7 @@ app.put('/users', jsonParser, function(req, res) {
 	newUser.data = req.body.data;
 	var params = { username: newUser.username};
 	Users.db.collection('users').update(params, newUser, function(err, users) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -92,6 +97,7 @@ app.post('/users', jsonParser, function(req, res) {
 	newUser.meta = meta;
 	newUser.data = req.body;
 	Users.db.collection('users').insert(newUser, function(err, users) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -121,12 +127,15 @@ app.get('/items', function(req, res) {
 	});
 });
 
-app.get('/items/:itemId', function(req, res) {
-	Items.where('_id', ObjectId(req.params.itemId)).find(function(err, items) {
+app.get('/item/:itemId', function(req, res) {
+	Items.findOne({_id: req.params.itemId}, function(err, items) {
 		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
+			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 			if (err) res.send(err);
 			else {
-				res.send(items);
+				response.data = items;
+				response.notification = codeDictionary.MDB0001;
+				res.send(response);
 			}
 		});
 	});
@@ -138,6 +147,7 @@ app.put('/items', jsonParser, function(req, res) {
 	newItem.data = req.body.data;
 	var params = { _id: ObjectId(req.body._id)};
 	Users.db.collection('items').update(params, newItem, function(err, items) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -154,6 +164,7 @@ app.post('/items', jsonParser, function(req, res) {
 	newItem.meta = meta;
 	newItem.data = req.body;
 	Users.db.collection('items').insert(newItem, function(err, items) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}

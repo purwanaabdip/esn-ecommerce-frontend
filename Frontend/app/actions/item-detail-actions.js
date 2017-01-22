@@ -1,19 +1,12 @@
 // ================================
 // Created by Eka Setya Nugraha.
-// Copyright 01/21/2017.
+// Copyright 1/21/2017.
 // ================================
 import dispatcher from '../dispatcher'
 
-export function createItem(item) {
-	dispatcher.dispatch({
-		type: 'create_item',
-		item
-	});
-}
-
-export function getItems() {
+export function getItem(id) {
     dispatcher.dispatch({type: 'xhr_start'});
-	const url = 'http://localhost:3000/items';
+	const url = 'http://localhost:3000/item/' + id;
 	var response = {};
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true); // true for asynchronous
@@ -25,6 +18,6 @@ export function getItems() {
         }
     }
     xhr.onload = function() {
-		dispatcher.dispatch({type: 'get_items', data: response});
+		dispatcher.dispatch({type: 'get_item', data: response});
     }
 }

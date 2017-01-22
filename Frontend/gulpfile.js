@@ -12,7 +12,7 @@ gulp.task('serve', function() {
 });
 
 gulp.task('build', function () {
-    return browserify({entries: './app/components/index.jsx', extensions: ['.jsx'], debug: true})
+    return browserify({entries: './app/components/index.js', extensions: ['.js'], debug: true})
         .transform('babelify', {presets: ['es2015', 'react']})
         .bundle()
         .pipe(source('bundle.js'))
@@ -20,7 +20,7 @@ gulp.task('build', function () {
 });
 
 gulp.task('watch', ['build'], function () {
-    gulp.watch(['app/components/*.jsx', 'app/stores/*.js'], ['build']);
+    gulp.watch(['app/components/*.js', 'app/stores/*.js'], ['build']);
 });
 
 gulp.task('default', ['watch', 'serve']);

@@ -109,6 +109,7 @@ app.post('/users', jsonParser, function(req, res) {
 var Items = mongoose.model('items');
 app.get('/items', function(req, res) {
 	Items.find(function(err, items) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}

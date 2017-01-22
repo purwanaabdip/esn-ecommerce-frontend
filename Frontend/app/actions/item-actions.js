@@ -1,3 +1,7 @@
+// ================================
+// Created by Eka Setya Nugraha.
+// Copyright 01/21/2017.
+// ================================
 import dispatcher from '../dispatcher'
 
 export function createItem(item) {

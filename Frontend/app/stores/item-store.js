@@ -1,6 +1,6 @@
 // ================================
 // Created by Eka Setya Nugraha.
-// Copyright 1/21/2017.
+// Copyright 01/21/2017.
 // ================================
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher'
@@ -15,6 +15,7 @@ class ItemStore extends EventEmitter {
 	}
 
 	getState() {
+		// console.log('STORE STATE',this.state.loading);
 		return this.state;
 	}
 

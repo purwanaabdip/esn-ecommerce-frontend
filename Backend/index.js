@@ -73,7 +73,7 @@ app.get('/users/:userId', function(req, res) {
 app.put('/users', jsonParser, function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
-	newUser.data = req.body;
+	newUser.data = req.body.data;
 	var params = { username: newUser.username};
 	Users.db.collection('users').update(params, newUser, function(err, users) {
 		if (err) {
@@ -109,12 +109,20 @@ app.post('/users', jsonParser, function(req, res) {
 var Items = mongoose.model('items');
 app.get('/items', function(req, res) {
 	Items.find(function(err, items) {
-		res.send(items);
+		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
+		if (err) {
+			res.send(err);
+		}
+		else {
+			response.data = items;
+			response.notification = codeDictionary.MDB0001;
+			res.send(response);
+		}
 	});
 });
 
-app.get('/items/:userId', function(req, res) {
-	Items.where('meta.createdBy', req.params.userId).find(function(err, items) {
+app.get('/items/:itemId', function(req, res) {
+	Items.where('_id', ObjectId(req.params.itemId)).find(function(err, items) {
 		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
 			if (err) res.send(err);
 			else {

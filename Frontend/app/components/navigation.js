@@ -39,6 +39,7 @@ export default class Navigation extends React.Component {
                     <a className="item" id="cart-sidebar">
                         <i className="icon cart"></i>
                         <span>My cart</span>
+                        <div className="ui teal circular label">22</div>
                     </a>
                 </div>
             </div>

@@ -13,12 +13,8 @@ export default class App extends React.Component {
           <div>
             <Sidebar />
           	<div className="pusher">
-          		<div id="navigation">
-          			<Navigation />
-          		</div>
-          		<div id="content">
-          			{this.props.children}
-          		</div>
+        			<Navigation />
+        			{this.props.children}
       		  </div>
           </div>
         )

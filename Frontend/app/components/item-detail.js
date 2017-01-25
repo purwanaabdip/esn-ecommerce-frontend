@@ -68,6 +68,11 @@ export default class ItemDetail extends React.Component {
 				return <p>{item.data.itemDescription}</p>
 			}
 		})();
+		const itemBuyButton = (function() {
+			if (item.data) {
+				return <div className="ui circular segment"><h2 className="ui header">Buy Now<div className="sub header">{itemPrice}</div></h2></div>
+			}
+		})();
 		return (
 			<div className="ui container">
 	        	<div className="ui top attached block header">
@@ -86,8 +91,9 @@ export default class ItemDetail extends React.Component {
 							    	{itemHeader}
 							    	{itemDescription}
 						    	</div>
+									{itemBuyButton}
 					    	</div>
-					    </div>	
+					    </div>
 					</div>
 		        </div>
 				<div className="actions">

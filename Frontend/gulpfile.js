@@ -11,7 +11,12 @@ gulp.task('serve', function() {
     });
 });
 
-gulp.task('build', function () {
+gulp.task('html', function () {
+    return gulp.src('app/**/*.html')
+        .pipe(gulp.dest('app/'));
+});
+
+gulp.task('compile-js', function () {
     return browserify({entries: './app/components/index.js', extensions: ['.js'], debug: true})
         .transform('babelify', {presets: ['es2015', 'react']})
         .bundle()
@@ -19,8 +24,9 @@ gulp.task('build', function () {
         .pipe(gulp.dest('app'));
 });
 
-gulp.task('watch', ['build'], function () {
-    gulp.watch(['app/components/*.js', 'app/stores/*.js', 'app/actions/*.js'], ['build']);
+gulp.task('watch', ['html', 'compile-js'], function () {
+    gulp.watch(['app/components/*.js', 'app/stores/*.js', 'app/actions/*.js'], ['compile-js']);
+    gulp.watch('app/**/*.html', ['html']);
 });
 
 gulp.task('default', ['watch', 'serve']);

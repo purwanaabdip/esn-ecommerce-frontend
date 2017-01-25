@@ -5,18 +5,18 @@
 import React from 'react';
 
 import Navigation from './navigation';
+import Sidebar from './sidebar';
 
 export default class App extends React.Component {
     render() {
         return (
-        	<div className="pusher" id="app">
-        		<div id="navigation">
+          <div>
+            <Sidebar />
+          	<div className="pusher">
         			<Navigation />
-        		</div>
-        		<div id="content">
         			{this.props.children}
-        		</div>
-    		</div>
+      		  </div>
+          </div>
         )
     }
 }

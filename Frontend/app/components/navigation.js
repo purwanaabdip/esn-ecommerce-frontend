@@ -22,7 +22,7 @@ export default class Navigation extends React.Component {
                 <div className="ui simple dropdown item" tabIndex="0">Categories
                     <i className="dropdown icon"></i>
                     <div className="menu" tabIndex="-1">
-                        <Link to="/ps4" className="item">PS4</Link>
+                        <a className="item">PS4</a>
                     </div>
                 </div>
                 <div className="right menu">
@@ -39,6 +39,7 @@ export default class Navigation extends React.Component {
                     <a className="item" id="cart-sidebar">
                         <i className="icon cart"></i>
                         <span>My cart</span>
+                        <div className="ui teal circular label">22</div>
                     </a>
                 </div>
             </div>

@@ -43,7 +43,7 @@ var response = {};
 response.api = api;
 
 // ---------------------------------
-// Users routes
+// Users routes 
 // ---------------------------------
 var Users = mongoose.model('users');
 app.get('/users', function(req, res) {
@@ -64,9 +64,7 @@ app.get('/user/:userId', function(req, res) {
 	Users.findOne({_id: req.params.userId}, function(err, users) {
 		Users.populate(users, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
 			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
-			if (err) {
-				res.send(err);
-			}
+			if (err) res.send(err);
 			else {
 				response.data = users;
 				response.notification = codeDictionary.MDB0001;
@@ -133,9 +131,7 @@ app.get('/item/:itemId', function(req, res) {
 	Items.findOne({_id: req.params.itemId}, function(err, items) {
 		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
 			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
-			if (err) {
-				res.send(err);
-			}
+			if (err) res.send(err);
 			else {
 				response.data = items;
 				response.notification = codeDictionary.MDB0001;
@@ -175,24 +171,6 @@ app.post('/items', jsonParser, function(req, res) {
 		else {
 			response.data = items.ops;
 			response.notification = codeDictionary.MDB0002;
-			res.send(response);
-		}
-	});
-});
-
-// ---------------------------------
-// Orders routes
-// ---------------------------------
-var Orders = mongoose.model('orders');
-app.get('/orders', function(req, res) {
-	Orders.find(function(err, items) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
-		if (err) {
-			res.send(err);
-		}
-		else {
-			response.data = items;
-			response.notification = codeDictionary.MDB0001;
 			res.send(response);
 		}
 	});

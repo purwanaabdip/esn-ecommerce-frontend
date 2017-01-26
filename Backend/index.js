@@ -43,7 +43,7 @@ var response = {};
 response.api = api;
 
 // ---------------------------------
-// Users routes
+// Users routes 
 // ---------------------------------
 var Users = mongoose.model('users');
 app.get('/users', function(req, res) {

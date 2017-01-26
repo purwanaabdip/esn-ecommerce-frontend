@@ -9,7 +9,6 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var codeDictionary = require('./responseCodes.json');
 var api = require('./app.json');
@@ -43,7 +42,7 @@ var response = {};
 response.api = api;
 
 // ---------------------------------
-// Users routes 
+// Users routes
 // ---------------------------------
 var Users = mongoose.model('users');
 app.get('/users', function(req, res) {
@@ -76,7 +75,7 @@ app.get('/user/:userId', function(req, res) {
 	});
 });
 
-app.put('/users', jsonParser, function(req, res) {
+app.put('/users', function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body.data;
@@ -94,7 +93,7 @@ app.put('/users', jsonParser, function(req, res) {
 	});
 });
 
-app.post('/users', jsonParser, function(req, res) {
+app.post('/users', function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body;
@@ -145,7 +144,7 @@ app.get('/item/:itemId', function(req, res) {
 	});
 });
 
-app.put('/items', jsonParser, function(req, res) {
+app.put('/items', function(req, res) {
 	var newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body.data;
@@ -163,7 +162,7 @@ app.put('/items', jsonParser, function(req, res) {
 	});
 });
 
-app.post('/items', jsonParser, function(req, res) {
+app.post('/items', function(req, res) {
 	var newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body;

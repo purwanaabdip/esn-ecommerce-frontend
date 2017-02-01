@@ -1,6 +1,6 @@
 // ================================
-// Created by ekasetya.
-// Copyright 10/18/16.
+// Created by Eka Setya Nugraha.
+// Copyright 18/10/2016.
 // ================================
 import React from 'react';
 
@@ -14,7 +14,7 @@ export default class UserInfo extends React.Component {
 	        		<Breadcrumb title="User Info"/>
 	        	</div>
 	        	<div className="ui bottom attached segment">
-	        		
+
 		        </div>
 	        </div>
         )

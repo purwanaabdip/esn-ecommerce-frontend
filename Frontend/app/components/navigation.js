@@ -26,20 +26,20 @@ export default class Navigation extends React.Component {
                     </div>
                 </div>
                 <div className="right menu">
-                    <div className="ui simple dropdown item" tabIndex="0">
-                        <i className="icon user"></i>
-                        <span>My account</span>
-                        <div className="menu" tabIndex="-1">
-                            <Link to="/user-info" className="item">Edit info</Link>
-                            <div className="item">Purchase History</div>
-                            <div className="divider"></div>
-                            <div className="item">Settings</div>
-                        </div>
-                    </div>
                     <div className="ui simple dropdown item" tabIndex="0">Admin
                         <i className="dropdown icon"></i>
                         <div className="menu" tabIndex="-1">
                             <Link to="/admin/item-management" className="item">Item Management</Link>
+                        </div>
+                    </div>
+                    <div className="ui simple dropdown item" tabIndex="0">
+                        <i className="icon user"></i>
+                        <span>My account</span>
+                        <div className="menu" tabIndex="-1">
+                            <div className="item">Account Settings</div>
+                            <div className="item">Purchase History</div>
+                            <div className="divider"></div>
+                            <div className="item">Logout</div>
                         </div>
                     </div>
                     <a className="item" id="cart-sidebar">

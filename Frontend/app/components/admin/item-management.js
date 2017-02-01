@@ -1,6 +1,6 @@
 // ================================
-// Created by ekasetya.
-// Copyright 10/18/16.
+// Created by Eka Setya Nugraha.
+// Copyright 26/01/2017.
 // ================================
 import React from 'react';
 
@@ -55,25 +55,20 @@ export default class ItemManagement extends React.Component {
   	});
     return (
     	<div className="ui container">
-      	<div className="ui top attached block header">
-      		<Breadcrumb title="Items Management"/>
-      	</div>
-      	<div className="ui bottom attached segment">
-          <table className="ui fixed table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ItemComponents}
-            </tbody>
-          </table>
-        </div>
+        <table className="ui fixed table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ItemComponents}
+          </tbody>
+        </table>
       </div>
     )
   }

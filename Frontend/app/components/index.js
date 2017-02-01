@@ -1,3 +1,7 @@
+// ================================
+// Created by Eka Setya Nugraha.
+// Copyright 10/11/2016.
+// ================================
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router';

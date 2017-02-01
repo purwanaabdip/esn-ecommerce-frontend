@@ -1,11 +1,12 @@
 // ================================
-// Created by ekasetya.
-// Copyright 01/26/17.
+// Created by Eka Setya Nugraha.
+// Copyright 26/01/2017.
 // ================================
 import React from 'react';
 
-import Navigation from '../navigation';
 import Sidebar from '../sidebar';
+import Navigation from '../navigation';
+import Footer from '../footer';
 
 export default class AdminRoot extends React.Component {
     render() {
@@ -15,6 +16,7 @@ export default class AdminRoot extends React.Component {
           	<div className="pusher">
         			<Navigation />
         			{this.props.children}
+              <Footer />
       		  </div>
           </div>
         )

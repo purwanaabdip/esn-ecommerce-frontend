@@ -75,10 +75,10 @@ export default class ItemDetail extends React.Component {
 		})();
 		return (
 			<div className="ui container">
-	        	<div className="ui top attached block header">
-	        		{itemBreadcrumb}
-	        	</div>
-	        	<div className="ui bottom attached segment">
+      	<div className="ui top attached block header">
+      		{itemBreadcrumb}
+      	</div>
+      	<div className="ui bottom attached segment">
 					<div className="image content">
 						<div className="ui stackable grid">
 							<div className="six wide column center aligned">
@@ -95,7 +95,7 @@ export default class ItemDetail extends React.Component {
 					    	</div>
 					    </div>
 					</div>
-		        </div>
+        </div>
 				<div className="actions">
 					<div className="ui deny button">Cancel</div>
 			    	<ButtonProcess id={this.props.id} label="Add to cart" />

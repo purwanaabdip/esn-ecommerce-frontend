@@ -22,7 +22,12 @@ export default class Navigation extends React.Component {
                 <div className="ui simple dropdown item" tabIndex="0">Categories
                     <i className="dropdown icon"></i>
                     <div className="menu" tabIndex="-1">
-                        <a className="item">PS4</a>
+                        <a className="item">Playstation 3</a>
+                        <a className="item">Playstation 4</a>
+                        <a className="item">Xbox 360</a>
+                        <a className="item">Xbox One</a>
+                        <a className="item">Nintendo WiiU</a>
+                        <a className="item">Nintendo 3DS</a>
                     </div>
                 </div>
                 <div className="right menu">

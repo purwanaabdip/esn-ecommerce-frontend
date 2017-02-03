@@ -15,7 +15,6 @@ class ItemStore extends EventEmitter {
 	}
 
 	getState() {
-		// console.log('STORE STATE',this.state.loading);
 		return this.state;
 	}
 
@@ -28,6 +27,18 @@ class ItemStore extends EventEmitter {
 			}
 			case 'get_items': {
 				this.state.items = action.data;
+				this.state.loading = false;
+				this.emit('change');
+				break;
+			}
+			case 'insert_item': {
+				this.state.items.push(action.data[0]);
+				this.state.loading = false;
+				this.emit('change');
+				break;
+			}
+			case 'delete_item': {
+				this.state.items.splice(action.data[0]);
 				this.state.loading = false;
 				this.emit('change');
 				break;

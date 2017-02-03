@@ -5,6 +5,7 @@
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
+import Loader from '../loader';
 import ItemManagementForm from './item-management-form';
 
 import ItemStore from '../../stores/item-store';
@@ -45,6 +46,9 @@ export default class ItemManagement extends React.Component {
 	getItems() {
 		ItemActions.getItems();
 	}
+	deleteItem(item) {
+		ItemActions.deleteItem(item);
+	}
   render() {
 		// Iterate through all items to make Item components
 		const ItemComponents = this.state.items.map((item) => {
@@ -55,21 +59,21 @@ export default class ItemManagement extends React.Component {
           <td>{item.data.itemName}</td>
           <td>{item.data.itemPrice}</td>
           <td>{item.data.itemStock}</td>
-          <td>{item.data.itemDescription}</td>
+          <td>
+            <button className="circular ui icon blue button" title="Edit">
+              <i className="icon edit"></i>
+            </button>
+            <button className="circular ui icon red button" title="Delete" onClick={this.deleteItem.bind(this, item)}>
+              <i className="icon trash"></i>
+            </button>
+          </td>
         </tr>
       )
   	});
     return (
     	<div className="ui container">
         <div className="ui basic segment">
-          <div className="left ui rail"></div>
-          <div className="right ui rail">
-            <div className="ui sticky">
-              <div className="ui basic segment">
-                <div className="ui button primary" id="add-new-item">Add new item</div>
-              </div>
-            </div>
-          </div>
+          <Loader />
           <table className="ui fixed table" id="sticky-segment">
             <thead>
               <tr>
@@ -78,7 +82,7 @@ export default class ItemManagement extends React.Component {
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
-                <th>Description</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -86,6 +90,7 @@ export default class ItemManagement extends React.Component {
             </tbody>
           </table>
         </div>
+        <div className="fluid large ui button primary" id="add-new-item">Add new item</div>
         <ItemManagementForm button="#add-new-item"/>
       </div>
     )

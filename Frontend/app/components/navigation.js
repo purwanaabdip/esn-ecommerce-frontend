@@ -16,7 +16,7 @@ export default class Navigation extends React.Component {
         return (
             <div className="ui borderless main menu">
                 <Link to="/" className="header item">
-                    <img className="logo" src="./themes/default/assets/images/favicon.png"/>
+                    <img className="logo" src="/themes/default/assets/images/favicon.png"/>
                     Kocak Store
                 </Link>
                 <div className="ui simple dropdown item" tabIndex="0">Categories

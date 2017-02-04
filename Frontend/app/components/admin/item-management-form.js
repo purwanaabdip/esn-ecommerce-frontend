@@ -29,6 +29,7 @@ export default class ItemManagementForm extends React.Component {
   }
 	// Modal actions (show, submit, hide)
   submitForm() {
+		// Check if all fields are valid
 		if ($('#item-form').form('is valid')) {
 	    // Initialize item object to send
 	    let item = {
@@ -92,8 +93,8 @@ export default class ItemManagementForm extends React.Component {
                 <label>Description</label>
                 <textarea placeholder="Description" id="itemDescription"/>
               </div>
-		          <div className="ui cancel button" onClick={this.closeForm.bind(this)}>Cancel</div>
-		          <div className="ui green submit button" onClick={this.submitForm.bind(this)}>Create</div>
+		          <div className="ui cancel button" onClick={this.closeForm}>Cancel</div>
+		          <div className="ui green button" onClick={this.submitForm}>Create</div>
             </form>
           </div>
         </div>

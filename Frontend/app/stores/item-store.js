@@ -13,11 +13,9 @@ class ItemStore extends EventEmitter {
 			loading: false
 		}
 	}
-
 	getState() {
 		return this.state;
 	}
-
 	handleActions(action) {
 		switch(action.type) {
 			case 'xhr_start': {
@@ -38,7 +36,6 @@ class ItemStore extends EventEmitter {
 				break;
 			}
 			case 'delete_item': {
-				this.state.items.splice(action.data[0]);
 				this.state.loading = false;
 				this.emit('change');
 				break;

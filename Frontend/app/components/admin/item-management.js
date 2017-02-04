@@ -24,8 +24,8 @@ export default class ItemManagement extends React.Component {
 	}
 	componentDidMount() {
 		$('#loader').hide();
-    $('.ui.sticky').sticky({
-      context: '#sticky-segment'
+    $('#add-new-item').popup({
+      popup: '.special.popup'
     });
 	}
 	componentWillUnmount() {
@@ -57,6 +57,7 @@ export default class ItemManagement extends React.Component {
           <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
           <td>{item.data.itemId}</td>
           <td>{item.data.itemName}</td>
+          <td>{item.data.itemDescription}</td>
           <td>{item.data.itemPrice}</td>
           <td>{item.data.itemStock}</td>
           <td>
@@ -66,31 +67,31 @@ export default class ItemManagement extends React.Component {
             <button className="circular ui icon red button" title="Delete" onClick={this.deleteItem.bind(this, item)}>
               <i className="icon trash"></i>
             </button>
+            <div className="ui special popup">Create new item</div>
           </td>
         </tr>
       )
   	});
     return (
     	<div className="ui container">
-        <div className="ui basic segment">
-          <Loader />
-          <table className="ui fixed table" id="sticky-segment">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Item ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ItemComponents}
-            </tbody>
-          </table>
-        </div>
-        <div className="fluid large ui button primary" id="add-new-item">Add new item</div>
+        <table className="ui fixed table" id="sticky-segment">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Item ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ItemComponents}
+          </tbody>
+        </table>
+        <div className="fluid large ui button primary" id="add-new-item" data-position="top center">Add new item</div>
+        <div className="ui special popup">Create new item</div>
         <ItemManagementForm button="#add-new-item"/>
       </div>
     )

@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
     // Request headers you wish to allow
@@ -141,16 +141,14 @@ app.get('/items', function(req, res) {
 
 app.get('/item/:itemId', function(req, res) {
 	Items.findOne({_id: req.params.itemId}, function(err, items) {
-		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
-			if (err) {
-				res.send(err);
-			}
-			else {
-				response.data = items;
-				response.notification = codeDictionary.MDB0001;
-				res.send(response);
-			}
-		});
+		if (err) {
+			res.send(err);
+		}
+		else {
+			response.data = items;
+			response.notification = codeDictionary.MDB0001;
+			res.send(response);
+		}
 	});
 });
 

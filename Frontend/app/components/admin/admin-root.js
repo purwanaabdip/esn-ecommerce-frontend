@@ -12,12 +12,7 @@ export default class AdminRoot extends React.Component {
     render() {
         return (
           <div>
-            <Sidebar />
-          	<div className="pusher">
-        			<Navigation />
-        			{this.props.children}
-              <Footer />
-      		  </div>
+      			{this.props.children}
           </div>
         )
     }

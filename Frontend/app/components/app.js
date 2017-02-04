@@ -1,11 +1,12 @@
 // ================================
-// Created by ekasetya.
-// Copyright 10/18/16.
+// Created by Eka Setya Nugraha.
+// Copyright 18/10/2016.
 // ================================
 import React from 'react';
 
-import Navigation from './navigation';
 import Sidebar from './sidebar';
+import Navigation from './navigation';
+import Footer from './footer';
 
 export default class App extends React.Component {
     render() {
@@ -15,6 +16,7 @@ export default class App extends React.Component {
           	<div className="pusher">
         			<Navigation />
         			{this.props.children}
+              <Footer />
       		  </div>
           </div>
         )

@@ -18,20 +18,16 @@ export default class Home extends React.Component {
 		this.refresh = this.refresh.bind(this);
 		this.state = ItemStore.getState();
 	}
-
 	componentWillMount() {
 		ItemStore.on('change', this.refresh);
 		ItemActions.getItems();
 	}
-
 	componentDidMount() {
 		$('#loader').hide();
 	}
-
 	componentWillUnmount() {
 		ItemStore.removeListener('change', this.refresh);
 	}
-
 	refresh() {
 		this.state = ItemStore.getState();
 		this.setState(this.state);
@@ -44,11 +40,9 @@ export default class Home extends React.Component {
 			$('#loader').hide();
 		}
 	}
-
 	getItems() {
 		ItemActions.getItems();
 	}
-
   render() {
 		// Iterate through all items to make Item components
 		const ItemComponents = this.state.items.map((item) => {
@@ -58,13 +52,13 @@ export default class Home extends React.Component {
 			<div className="ui container">
       	<div className="ui top attached block header">
       		<Breadcrumb title="Home" />
-          <button className="ui button" onClick={this.getItems.bind(this)}>Refresh</button>
+					<button className="ui button" onClick={this.getItems.bind(this)}>Refresh</button>
       	</div>
       	<div className="ui bottom attached segment">
-	          <div className="ui special four stackable doubling cards">
-	          	<Loader />
-	          	{ItemComponents}
-	          </div>
+          <div className="ui special four stackable doubling cards">
+          	<Loader />
+          	{ItemComponents}
+          </div>
 	      </div>
       </div>
     )

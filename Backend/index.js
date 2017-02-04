@@ -18,7 +18,21 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(bodyParser.json());
+// Add headers
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+});
 // Development only
 if ('development' == app.get('env')) {
 	mongoose.connect('mongodb://localhost/ecommerce');
@@ -39,6 +53,8 @@ var meta = {
 	deletedBy: ''
 };
 var response = {};
+let notDeletedDate = new Date(0);
+notDeletedDate.setHours(notDeletedDate.getHours()-7);
 response.api = api;
 
 // ---------------------------------
@@ -47,7 +63,6 @@ response.api = api;
 var Users = mongoose.model('users');
 app.get('/users', function(req, res) {
 	Users.find(function(err, users) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -62,7 +77,6 @@ app.get('/users', function(req, res) {
 app.get('/user/:userId', function(req, res) {
 	Users.findOne({_id: req.params.userId}, function(err, users) {
 		Users.populate(users, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
-			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 			if (err) {
 				res.send(err);
 			}
@@ -81,7 +95,6 @@ app.put('/users', function(req, res) {
 	newUser.data = req.body.data;
 	var params = { username: newUser.username};
 	Users.db.collection('users').update(params, newUser, function(err, users) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -98,7 +111,6 @@ app.post('/users', function(req, res) {
 	newUser.meta = meta;
 	newUser.data = req.body;
 	Users.db.collection('users').insert(newUser, function(err, users) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
@@ -115,8 +127,7 @@ app.post('/users', function(req, res) {
 // ---------------------------------
 var Items = mongoose.model('items');
 app.get('/items', function(req, res) {
-	Items.find(function(err, items) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
+	Items.find({'meta.deletedBy': ''}, function(err, items) {
 		if (err) {
 			res.send(err);
 		}
@@ -130,44 +141,36 @@ app.get('/items', function(req, res) {
 
 app.get('/item/:itemId', function(req, res) {
 	Items.findOne({_id: req.params.itemId}, function(err, items) {
-		Items.populate(items, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
-			res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
-			if (err) {
-				res.send(err);
-			}
-			else {
-				response.data = items;
-				response.notification = codeDictionary.MDB0001;
-				res.send(response);
-			}
-		});
-	});
-});
-
-app.put('/items', function(req, res) {
-	var newItem = {};
-	newItem.meta = meta;
-	newItem.data = req.body.data;
-	var params = { _id: ObjectId(req.body._id)};
-	Users.db.collection('items').update(params, newItem, function(err, items) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}
 		else {
 			response.data = items;
-			response.notification = codeDictionary.MDB0003;
+			response.notification = codeDictionary.MDB0001;
 			res.send(response);
 		}
 	});
+});
+
+app.put('/items', function(req, res) {
+  let newItem = req.body;
+	Items.findByIdAndUpdate(req.body._id, {$set: {'meta':newItem.meta}}, {new: true}, function(err, result) {
+		if (err) {
+			res.send(err);
+		}
+		else {
+			response.data = result;
+			response.notification = codeDictionary.MDB0003;
+			res.send(response);
+    }
+  });
 });
 
 app.post('/items', function(req, res) {
 	var newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body;
-	Users.db.collection('items').insert(newItem, function(err, items) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
+	Items.db.collection('items').insert(newItem, function(err, items) {
 		if (err) {
 			res.send(err);
 		}
@@ -185,7 +188,6 @@ app.post('/items', function(req, res) {
 var Orders = mongoose.model('orders');
 app.get('/orders', function(req, res) {
 	Orders.find(function(err, items) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:9000');
 		if (err) {
 			res.send(err);
 		}

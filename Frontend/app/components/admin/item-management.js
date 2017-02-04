@@ -1,10 +1,12 @@
 // ================================
-// Created by ekasetya.
-// Copyright 10/18/16.
+// Created by Eka Setya Nugraha.
+// Copyright 26/01/2017.
 // ================================
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
+import Loader from '../loader';
+import ItemManagementForm from './item-management-form';
 
 import ItemStore from '../../stores/item-store';
 import * as ItemActions from '../../actions/item-actions';
@@ -16,20 +18,19 @@ export default class ItemManagement extends React.Component {
 		this.refresh = this.refresh.bind(this);
 		this.state = ItemStore.getState();
 	}
-
 	componentWillMount() {
 		ItemStore.on('change', this.refresh);
 		ItemActions.getItems();
 	}
-
 	componentDidMount() {
 		$('#loader').hide();
+    $('#add-new-item').popup({
+      popup: '.special.popup'
+    });
 	}
-
 	componentWillUnmount() {
 		ItemStore.removeListener('change', this.refresh);
 	}
-
 	refresh() {
 		this.state = ItemStore.getState();
 		this.setState(this.state);
@@ -42,38 +43,56 @@ export default class ItemManagement extends React.Component {
 			$('#loader').hide();
 		}
 	}
-
 	getItems() {
 		ItemActions.getItems();
 	}
-
+	deleteItem(item) {
+		ItemActions.deleteItem(item);
+	}
   render() {
 		// Iterate through all items to make Item components
 		const ItemComponents = this.state.items.map((item) => {
-  		// return <Item key={item._id} id={item._id} src={"../themes/default/assets/images/" + item.data.itemImage} name={item.data.itemName} price={item.data.itemPrice} description={item.data.itemDescription}/>
-      return <tr key={item._id} id={item._id}><td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td><td>{item.data.itemId}</td><td className="single line">{item.data.itemName}</td><td>{item.data.itemStock}</td><td>{item.data.itemDescription}</td></tr>
+      return (
+        <tr key={item._id} id={item._id}>
+          <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
+          <td>{item.data.itemId}</td>
+          <td>{item.data.itemName}</td>
+          <td>{item.data.itemDescription}</td>
+          <td>{item.data.itemPrice}</td>
+          <td>{item.data.itemStock}</td>
+          <td>
+            <button className="circular ui icon blue button" title="Edit">
+              <i className="icon edit"></i>
+            </button>
+            <button className="circular ui icon red button" title="Delete" onClick={this.deleteItem.bind(this, item)}>
+              <i className="icon trash"></i>
+            </button>
+            <div className="ui special popup">Create new item</div>
+          </td>
+        </tr>
+      )
   	});
     return (
     	<div className="ui container">
-      	<div className="ui top attached block header">
-      		<Breadcrumb title="Items Management"/>
-      	</div>
-      	<div className="ui bottom attached segment">
-          <table className="ui fixed table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ItemComponents}
-            </tbody>
-          </table>
-        </div>
+        <table className="ui fixed table" id="sticky-segment">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Item ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ItemComponents}
+          </tbody>
+        </table>
+        <div className="fluid large ui button primary" id="add-new-item" data-position="top center">Add new item</div>
+        <div className="ui special popup">Create new item</div>
+        <ItemManagementForm button="#add-new-item"/>
       </div>
     )
   }

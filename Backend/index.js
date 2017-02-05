@@ -1,56 +1,56 @@
-'use strict';
+"use strict";
 // Module Dependencies
-var express = require('express');
-// import routes from './routes';
-// import user from './routes/user';
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
-var mongoose = require('mongoose');
+var express = require("express");
+// import routes from "./routes";
+// import user from "./routes/user";
+var http = require("http");
+var path = require("path");
+var fs = require("fs");
+var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-var codeDictionary = require('./responseCodes.json');
-var api = require('./app.json');
+var codeDictionary = require("./responseCodes.json");
+var api = require("./app.json");
 var app = express();
 
 // Environment settings
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.set("port", process.env.PORT || 3000);
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT");
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Credentials", true);
     // Pass to next layer of middleware
     next();
 });
 // Development only
-if ('development' == app.get('env')) {
-	mongoose.connect('mongodb://localhost/ecommerce');
+if ("development" == app.get("env")) {
+	mongoose.connect("mongodb://localhost/ecommerce");
 }
 
 // Import all models
-fs.readdirSync(__dirname + '/models').forEach(function(filename) {
-	if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
+fs.readdirSync(__dirname + "/models").forEach(function(filename) {
+	if(~filename.indexOf(".js")) require(__dirname + "/models/" + filename);
 });
 
 // Set metadata
 var meta = {
 	createdAt: new Date(),
-	createdBy: '',
+	createdBy: "",
 	updatedAt: new Date(),
-	updatedBy: '',
+	updatedBy: "",
 	deletedAt: new Date(0),
-	deletedBy: ''
+	deletedBy: ""
 };
 var response = {};
 let notDeletedDate = new Date(0);
@@ -60,8 +60,8 @@ response.api = api;
 // ---------------------------------
 // Users routes
 // ---------------------------------
-var Users = mongoose.model('users');
-app.get('/users', function(req, res) {
+var Users = mongoose.model("users");
+app.get("/users", function(req, res) {
 	Users.find(function(err, users) {
 		if (err) {
 			res.send(err);
@@ -74,9 +74,9 @@ app.get('/users', function(req, res) {
 	});
 });
 
-app.get('/user/:userId', function(req, res) {
+app.get("/user/:userId", function(req, res) {
 	Users.findOne({_id: req.params.userId}, function(err, users) {
-		Users.populate(users, {path: 'meta.createdBy meta.updatedBy meta.deletedBy', select: 'data'}, function(err, items) {
+		Users.populate(users, {path: "meta.createdBy meta.updatedBy meta.deletedBy", select: "data"}, function(err, items) {
 			if (err) {
 				res.send(err);
 			}
@@ -89,12 +89,12 @@ app.get('/user/:userId', function(req, res) {
 	});
 });
 
-app.put('/users', function(req, res) {
+app.put("/users", function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body.data;
 	var params = { username: newUser.username};
-	Users.db.collection('users').update(params, newUser, function(err, users) {
+	Users.db.collection("users").update(params, newUser, function(err, users) {
 		if (err) {
 			res.send(err);
 		}
@@ -106,11 +106,11 @@ app.put('/users', function(req, res) {
 	});
 });
 
-app.post('/users', function(req, res) {
+app.post("/users", function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body;
-	Users.db.collection('users').insert(newUser, function(err, users) {
+	Users.db.collection("users").insert(newUser, function(err, users) {
 		if (err) {
 			res.send(err);
 		}
@@ -125,9 +125,9 @@ app.post('/users', function(req, res) {
 // ---------------------------------
 // Items routes
 // ---------------------------------
-var Items = mongoose.model('items');
-app.get('/items', function(req, res) {
-	Items.find({'meta.deletedBy': ''}, function(err, items) {
+var Items = mongoose.model("items");
+app.get("/items", function(req, res) {
+	Items.find({"meta.deletedBy": ""}, function(err, items) {
 		if (err) {
 			res.send(err);
 		}
@@ -139,7 +139,7 @@ app.get('/items', function(req, res) {
 	});
 });
 
-app.get('/item/:itemId', function(req, res) {
+app.get("/item/:itemId", function(req, res) {
 	Items.findOne({_id: req.params.itemId}, function(err, items) {
 		if (err) {
 			res.send(err);
@@ -152,9 +152,8 @@ app.get('/item/:itemId', function(req, res) {
 	});
 });
 
-app.put('/items', function(req, res) {
-  let newItem = req.body;
-	Items.findByIdAndUpdate(req.body._id, {$set: {'meta':newItem.meta}}, {new: true}, function(err, result) {
+app.put("/items", function(req, res) {
+	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, result) {
 		if (err) {
 			res.send(err);
 		}
@@ -166,11 +165,11 @@ app.put('/items', function(req, res) {
   });
 });
 
-app.post('/items', function(req, res) {
+app.post("/items", function(req, res) {
 	var newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body;
-	Items.db.collection('items').insert(newItem, function(err, items) {
+	Items.findOneAndUpdate({"data.itemId": req.body.itemId, "meta.deletedBy": ""}, newItem, {upsert: true, new: true, runValidators: true}, function(err, items) {
 		if (err) {
 			res.send(err);
 		}
@@ -185,8 +184,8 @@ app.post('/items', function(req, res) {
 // ---------------------------------
 // Orders routes
 // ---------------------------------
-var Orders = mongoose.model('orders');
-app.get('/orders', function(req, res) {
+var Orders = mongoose.model("orders");
+app.get("/orders", function(req, res) {
 	Orders.find(function(err, items) {
 		if (err) {
 			res.send(err);
@@ -200,5 +199,5 @@ app.get('/orders', function(req, res) {
 });
 
 app.listen(3000, function() {
-	console.log('Express server started on port 3000');
+	console.log("Express server started on port 3000");
 });

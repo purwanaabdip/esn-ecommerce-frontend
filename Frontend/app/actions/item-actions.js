@@ -17,14 +17,39 @@ export function getItems() {
 	});
 }
 
+// Insert item preparation
+export function prepInsertItem(item) {
+	dispatcher.dispatch({type: 'prep_insert_item', data: item});
+}
+
 // Insert new item
 export function insertItem(item) {
 	dispatcher.dispatch({type: 'xhr_start'});
 	axios.post(url, item).then(function(response){
-		dispatcher.dispatch({type: 'insert_item', data: response.data.data});
+		getItems();
 	}).catch(function(error){
 		console.log(error);
 	});
+}
+
+// Edit item preparation
+export function prepEditItem(item) {
+	dispatcher.dispatch({type: 'prep_edit_item', data: item});
+}
+
+// Edit item
+export function editItem(item) {
+	dispatcher.dispatch({type: 'xhr_start'});
+	axios.put(url, item).then(function(response){
+		getItems();
+	}).catch(function(error){
+		console.log(error);
+	});
+}
+
+// Delete item preparation
+export function prepDeleteItem(item) {
+	dispatcher.dispatch({type: 'prep_delete_item', data: item});
 }
 
 // Delete item
@@ -33,7 +58,6 @@ export function deleteItem(item) {
 	item.meta.deletedAt = new Date();
 	item.meta.deletedBy = "58834b9567c5f223888d2e5b";
 	axios.put(url, item).then(function(response){
-		dispatcher.dispatch({type: 'delete_item', data: response.data.data});
 		getItems();
 	}).catch(function(error){
 		console.log(error);

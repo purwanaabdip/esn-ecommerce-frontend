@@ -24,8 +24,8 @@ export default class ItemManagement extends React.Component {
 	}
 	componentDidMount() {
 		$('#loader').hide();
-    $('#add-new-item').popup({
-      popup: '.special.popup'
+    $('.message .close').on('click', function() {
+      $(this).closest('.message').transition('fade');
     });
 	}
 	componentWillUnmount() {
@@ -46,10 +46,27 @@ export default class ItemManagement extends React.Component {
 	getItems() {
 		ItemActions.getItems();
 	}
-	deleteItem(item) {
-		ItemActions.deleteItem(item);
+	prepInsertItem() {
+		ItemActions.prepInsertItem();
+	}
+	prepEditItem(item) {
+		ItemActions.prepEditItem(item);
+	}
+	prepDeleteItem(item) {
+		ItemActions.prepDeleteItem(item);
 	}
   render() {
+    const message = (function() {
+      return (
+        <div className="ui success message">
+          <i className="close icon"></i>
+          <div className="header">
+            Item successfully created.
+          </div>
+          <p>Add another!</p>
+        </div>
+      )
+    })();
 		// Iterate through all items to make Item components
 		const ItemComponents = this.state.items.map((item) => {
       return (
@@ -61,13 +78,12 @@ export default class ItemManagement extends React.Component {
           <td>{item.data.itemPrice}</td>
           <td>{item.data.itemStock}</td>
           <td>
-            <button className="circular ui icon blue button" title="Edit">
+            <button className="circular ui icon blue button" title="Edit" onClick={this.prepEditItem.bind(this, item)}>
               <i className="icon edit"></i>
             </button>
-            <button className="circular ui icon red button" title="Delete" onClick={this.deleteItem.bind(this, item)}>
+            <button className="circular ui icon red button" title="Delete" onClick={this.prepDeleteItem.bind(this, item)}>
               <i className="icon trash"></i>
             </button>
-            <div className="ui special popup">Create new item</div>
           </td>
         </tr>
       )
@@ -90,9 +106,10 @@ export default class ItemManagement extends React.Component {
             {ItemComponents}
           </tbody>
         </table>
-        <div className="fluid large ui button primary" id="add-new-item" data-position="top center">Add new item</div>
+        {message}
+        <div className="fluid large ui button primary" data-position="top center" onClick={this.prepInsertItem.bind(this)}>Add new item</div>
         <div className="ui special popup">Create new item</div>
-        <ItemManagementForm button="#add-new-item"/>
+        <ItemManagementForm />
       </div>
     )
   }

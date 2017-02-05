@@ -20,7 +20,12 @@ var itemsSchema = new Schema({
 		}
 	},
 	data: {
-		itemName: String
+		itemId: String,
+		itemName: String,
+		itemImage: String,
+		itemPrice: Number,
+		itemStock: Number,
+		itemDescription: String
 	}
 });
 

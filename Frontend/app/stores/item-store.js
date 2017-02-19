@@ -14,6 +14,7 @@ class ItemStore extends EventEmitter {
 			// Individual item (for edit and delete)
 			item: {},
 			activity: "",
+			alert: "",
 			loading: false
 		}
 	}
@@ -36,19 +37,34 @@ class ItemStore extends EventEmitter {
 			case "prep_insert_item": {
 				this.state.item = {};
 				this.state.activity = "insert";
+				this.state.alert = "";
 				this.emit("change_item");
+				break;
+			}
+			case "insertSuccessful": {
+				this.state.alert = "Item successfully created!";
 				break;
 			}
 			case "prep_edit_item": {
 				this.state.item = action.data;
 				this.state.activity = "edit";
+				this.state.alert = "";
 				this.emit("change_item");
+				break;
+			}
+			case "editSuccessful": {
+				this.state.alert = "Item successfully updated!";
 				break;
 			}
 			case "prep_delete_item": {
 				this.state.item = action.data;
 				this.state.activity = "delete";
+				this.state.alert = "";
 				this.emit("change_item");
+				break;
+			}
+			case "deleteSuccessful": {
+				this.state.alert = "Item successfully deleted!";
 				break;
 			}
 		}

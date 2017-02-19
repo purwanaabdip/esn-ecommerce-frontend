@@ -27,6 +27,7 @@ export function insertItem(item) {
 	dispatcher.dispatch({type: 'xhr_start'});
 	axios.post(url, item).then(function(response){
 		getItems();
+		dispatcher.dispatch({type: 'insertSuccessful'});
 	}).catch(function(error){
 		console.log(error);
 	});
@@ -42,6 +43,7 @@ export function editItem(item) {
 	dispatcher.dispatch({type: 'xhr_start'});
 	axios.put(url, item).then(function(response){
 		getItems();
+		dispatcher.dispatch({type: 'editSuccessful'});
 	}).catch(function(error){
 		console.log(error);
 	});
@@ -59,6 +61,7 @@ export function deleteItem(item) {
 	item.meta.deletedBy = "58834b9567c5f223888d2e5b";
 	axios.put(url, item).then(function(response){
 		getItems();
+		dispatcher.dispatch({type: 'deleteSuccessful'});
 	}).catch(function(error){
 		console.log(error);
 	});

@@ -95,14 +95,6 @@ export default class ItemManagementForm extends React.Component {
   }
 	closeForm() {
 		$(".ui.modal").modal("hide");
-		$("#item-form").form("set values", {
-			itemId : "",
-			itemName : "",
-			itemPrice : "",
-			itemStock : "",
-			itemImage : "",
-			itemDescription : ""
-		});
 	}
 	insertItem(item) {
 		ItemActions.insertItem(item);

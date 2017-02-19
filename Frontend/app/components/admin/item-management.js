@@ -56,24 +56,26 @@ export default class ItemManagement extends React.Component {
 		ItemActions.prepDeleteItem(item);
 	}
   render() {
+    const state = this.state;
     const message = (function() {
-      return (
-        <div className="ui success message">
-          <i className="close icon"></i>
-          <div className="header">
-            Item successfully created.
+      if (state.alert) {
+        return (
+          <div className="ui success message">
+            <i className="close icon"></i>
+            <div className="header">
+              {state.alert}
+            </div>
           </div>
-          <p>Add another!</p>
-        </div>
-      )
+        )
+      }
     })();
 		// Iterate through all items to make Item components
 		const ItemComponents = this.state.items.map((item) => {
       return (
         <tr key={item._id} id={item._id}>
           <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
-          <td>{item.data.itemId}</td>
-          <td>{item.data.itemName}</td>
+          <td>{item.data.itemId} - {item.data.itemName}</td>
+          <td></td>
           <td>{item.data.itemDescription}</td>
           <td>{item.data.itemPrice}</td>
           <td>{item.data.itemStock}</td>
@@ -90,7 +92,7 @@ export default class ItemManagement extends React.Component {
   	});
     return (
     	<div className="ui container">
-        <table className="ui fixed table" id="sticky-segment">
+        <table className="ui collapsing table" id="sticky-segment">
           <thead>
             <tr>
               <th>Image</th>

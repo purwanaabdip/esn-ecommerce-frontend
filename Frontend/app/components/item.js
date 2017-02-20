@@ -25,13 +25,10 @@ export default class Item extends React.Component {
 		    <div className="extra center aligned">
 		    	<Rating />
 		    </div>
-	    	<div className="header">{this.props.name}</div>
-	    	<div className="meta">
+	    	<div className="header center aligned">{this.props.name}</div>
+	    	<div className="meta center aligned">
 	        	<div className="group">Rp. {this.props.price}</div>
 	    	</div>
-	    	<div className="description">
-		    	{this.props.description}
-		    </div>
 	    </div>
 	    <div className="ui two bottom attached buttons">
 			<Link to={"/item/" + this.props.id} className="ui button">

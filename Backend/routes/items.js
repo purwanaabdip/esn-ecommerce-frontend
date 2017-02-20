@@ -1,9 +1,8 @@
-require('../models/items');
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const routes = require("express").Router();
-var codeDictionary = require("../responseCodes.json");
-var appVer = require("../app.json");
-var Items = mongoose.model("items");
+const codeDictionary = require("../responseCodes.json");
+const appVer = require("../app.json");
+const Items = require("../models/items");
 
 // Set metadata
 var meta = {
@@ -46,12 +45,12 @@ routes.get("/:itemId", function(req, res) {
 });
 
 routes.put("/", function(req, res) {
-	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, result) {
+	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, item) {
 		if (err) {
 			res.send(err);
 		}
 		else {
-			response.data = result;
+			response.data = item;
 			response.notification = codeDictionary.MDB0003;
 			res.send(response);
     }

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var itemsSchema = new Schema({
@@ -6,17 +6,17 @@ var itemsSchema = new Schema({
 		createdAt: Date,
 		createdBy: {
 			type: String,
-			ref: 'users'
+			ref: "users"
 		},
 		updatedAt: Date,
 		updatedBy: {
 			type: String,
-			ref: 'users'
+			ref: "users"
 		},
 		deletedAt: Date,
 		deletedBy: {
 			type: String,
-			ref: 'users'
+			ref: "users"
 		}
 	},
 	data: {
@@ -29,4 +29,4 @@ var itemsSchema = new Schema({
 	}
 });
 
-mongoose.model('items', itemsSchema);
+module.exports = mongoose.model("items", itemsSchema);

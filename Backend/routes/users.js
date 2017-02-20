@@ -1,9 +1,8 @@
-require('../models/users');
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const routes = require("express").Router();
-var codeDictionary = require("../responseCodes.json");
-var appVer = require("../app.json");
-var Users = mongoose.model("users");
+const codeDictionary = require("../responseCodes.json");
+const appVer = require("../app.json");
+const Users = require("../models/users");
 
 // Set metadata
 var meta = {
@@ -46,16 +45,12 @@ routes.get("/:userId", function(req, res) {
 });
 
 routes.put("/", function(req, res) {
-	var newUser = {};
-	newUser.meta = meta;
-	newUser.data = req.body.data;
-	var params = { username: newUser.username};
-	Users.db.collection("users").update(params, newUser, function(err, users) {
+	Users.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, user) {
 		if (err) {
 			res.send(err);
 		}
 		else {
-			response.data = users;
+			response.data = user;
 			response.notification = codeDictionary.MDB0003;
 			res.send(response);
 		}
@@ -66,7 +61,7 @@ routes.post("/", function(req, res) {
 	var newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body;
-	Users.db.collection("users").insert(newUser, function(err, users) {
+	Users.findOneAndUpdate({"data.userId": req.body.userId, "meta.deletedBy": ""}, newUser, {upsert: true, new: true, runValidators: true}, function(err, users) {
 		if (err) {
 			res.send(err);
 		}

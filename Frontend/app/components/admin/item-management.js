@@ -75,7 +75,6 @@ export default class ItemManagement extends React.Component {
         <tr key={item._id} id={item._id}>
           <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
           <td>{item.data.itemId} - {item.data.itemName}</td>
-          <td></td>
           <td>{item.data.itemDescription}</td>
           <td>{item.data.itemPrice}</td>
           <td>{item.data.itemStock}</td>
@@ -97,7 +96,6 @@ export default class ItemManagement extends React.Component {
             <tr>
               <th>Image</th>
               <th>Item ID</th>
-              <th>Name</th>
               <th>Description</th>
               <th>Price</th>
               <th>Stock</th>

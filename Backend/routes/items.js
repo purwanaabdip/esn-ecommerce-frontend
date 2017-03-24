@@ -1,3 +1,5 @@
+"use strict";
+// Module Dependencies
 const mongoose = require("mongoose");
 const routes = require("express").Router();
 const codeDictionary = require("../responseCodes.json");
@@ -5,21 +7,21 @@ const appVer = require("../app.json");
 const Items = require("../models/items");
 
 // Set metadata
-var meta = {
+let meta = {
 	createdAt: new Date(),
 	createdBy: "",
 	updatedAt: new Date(),
 	updatedBy: "",
-	deletedAt: new Date(0),
+	deletedAt: "",
 	deletedBy: ""
 };
-var response = {};
+let response = {};
 response.api = appVer;
 // ---------------------------------
 // Items routes (/items)
 // ---------------------------------
-routes.get("/", function(req, res) {
-	Items.find({"meta.deletedBy": ""}, function(err, items) {
+routes.get("/", (req, res) => {
+	Items.find({"meta.deletedBy": ""}, (err, items) => {
 		if (err) {
 			res.send(err);
 		}
@@ -31,8 +33,8 @@ routes.get("/", function(req, res) {
 	});
 });
 
-routes.get("/:itemId", function(req, res) {
-	Items.findOne({_id: req.params.itemId}, function(err, items) {
+routes.get("/:itemId", (req, res) => {
+	Items.findOne({_id: req.params.itemId}, (err, items) => {
 		if (err) {
 			res.send(err);
 		}
@@ -44,8 +46,8 @@ routes.get("/:itemId", function(req, res) {
 	});
 });
 
-routes.put("/", function(req, res) {
-	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, item) {
+routes.put("/", (req, res) => {
+	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, (err, item) => {
 		if (err) {
 			res.send(err);
 		}
@@ -57,11 +59,11 @@ routes.put("/", function(req, res) {
   });
 });
 
-routes.post("/", function(req, res) {
-	var newItem = {};
+routes.post("/", (req, res) => {
+	let newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body;
-	Items.findOneAndUpdate({"data.itemId": req.body.itemId, "meta.deletedBy": ""}, newItem, {upsert: true, new: true, runValidators: true}, function(err, items) {
+	Items.findOneAndUpdate({"data.itemId": req.body.itemId, "meta.deletedBy": ""}, newItem, {upsert: true, new: true, runValidators: true}, (err, items) => {
 		if (err) {
 			res.send(err);
 		}

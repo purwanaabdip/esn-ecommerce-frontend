@@ -1,15 +1,13 @@
 "use strict";
 // Module Dependencies
-var express = require("express");
-var passport = require("passport");
-var localStrategy = require("passport-local").Strategy;
-var path = require("path");
-var fs = require("fs");
-var mongoose = require("mongoose");
-var bodyParser = require("body-parser");
-var users = require("./routes/users");
-var items = require("./routes/items");
-var app = express();
+const express = require("express");
+const passport = require("passport");
+const localStrategy = require("passport-local").Strategy;
+const path = require("path");
+const fs = require("fs");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const app = express();
 
 // Development only
 if ("development" == app.get("env")) {
@@ -17,8 +15,8 @@ if ("development" == app.get("env")) {
 }
 
 passport.use(new localStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
+  (username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
       if (err) {
         return done(err);
       }
@@ -38,7 +36,7 @@ app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -47,17 +45,19 @@ app.use(function (req, res, next) {
 });
 
 // Import all models
-fs.readdirSync(__dirname + "/models").forEach(function(filename) {
+fs.readdirSync(__dirname + "/models").forEach((filename) => {
 	if(~filename.indexOf(".js")) require(__dirname + "/models/" + filename);
 });
 
 // Import all routes
+const users = require("./routes/users");
+const items = require("./routes/items");
 app.use("/users", users);
 app.use("/items", items);
 // ----------------------
 
 app.post("/login", passport.authenticate("local", { successRedirect: "/", failureRedirect: "/login", failureFlash: true }));
 
-app.listen(3000, function() {
+app.listen(3000, () => {
 	console.log("Express server started on port 3000");
 });

@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-var itemsSchema = new Schema({
+const Item = new Schema({
 	meta: {
 		createdAt: Date,
 		createdBy: {
@@ -29,4 +29,4 @@ var itemsSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model("items", itemsSchema);
+module.exports = mongoose.model("Item", Item);

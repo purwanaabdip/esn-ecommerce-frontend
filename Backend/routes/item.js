@@ -1,25 +1,26 @@
-const mongoose = require("mongoose");
-const routes = require("express").Router();
+"use strict";
+// Module Dependencies
+const router = require("express").Router();
 const codeDictionary = require("../responseCodes.json");
 const appVer = require("../app.json");
-const Items = require("../models/items");
+const Item = require("../models/item");
 
 // Set metadata
-var meta = {
+let meta = {
 	createdAt: new Date(),
 	createdBy: "",
 	updatedAt: new Date(),
 	updatedBy: "",
-	deletedAt: new Date(0),
+	deletedAt: "",
 	deletedBy: ""
 };
-var response = {};
+let response = {};
 response.api = appVer;
 // ---------------------------------
-// Items routes (/items)
+// Item routes (/item)
 // ---------------------------------
-routes.get("/", function(req, res) {
-	Items.find({"meta.deletedBy": ""}, function(err, items) {
+router.get("/", (req, res) => {
+	Item.find({"meta.deletedBy": ""}, (err, items) => {
 		if (err) {
 			res.send(err);
 		}
@@ -31,21 +32,21 @@ routes.get("/", function(req, res) {
 	});
 });
 
-routes.get("/:itemId", function(req, res) {
-	Items.findOne({_id: req.params.itemId}, function(err, items) {
+router.get("/:itemId", (req, res) => {
+	Item.findOne({_id: req.params.itemId}, (err, item) => {
 		if (err) {
 			res.send(err);
 		}
 		else {
-			response.data = items;
+			response.data = item;
 			response.notification = codeDictionary.MDB0001;
 			res.send(response);
 		}
 	});
 });
 
-routes.put("/", function(req, res) {
-	Items.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, item) {
+router.put("/", (req, res) => {
+	Item.findByIdAndUpdate(req.body._id, req.body, { new: true }, (err, item) => {
 		if (err) {
 			res.send(err);
 		}
@@ -57,20 +58,20 @@ routes.put("/", function(req, res) {
   });
 });
 
-routes.post("/", function(req, res) {
-	var newItem = {};
+router.post("/", (req, res) => {
+	let newItem = {};
 	newItem.meta = meta;
 	newItem.data = req.body;
-	Items.findOneAndUpdate({"data.itemId": req.body.itemId, "meta.deletedBy": ""}, newItem, {upsert: true, new: true, runValidators: true}, function(err, items) {
+	Item.findOneAndUpdate({"data.itemId": req.body.itemId, "meta.deletedBy": ""}, newItem, {upsert: true, new: true, runValidators: true}, (err, item) => {
 		if (err) {
 			res.send(err);
 		}
 		else {
-			response.data = items.ops;
+			response.data = item.ops;
 			response.notification = codeDictionary.MDB0002;
 			res.send(response);
 		}
 	});
 });
 
-module.exports = routes;
+module.exports = router;

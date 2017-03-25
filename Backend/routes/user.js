@@ -1,25 +1,26 @@
-const mongoose = require("mongoose");
-const routes = require("express").Router();
+"use strict";
+// Module Dependencies
+const router = require("express").Router();
 const codeDictionary = require("../responseCodes.json");
 const appVer = require("../app.json");
-const Users = require("../models/users");
+const User = require("../models/user");
 
 // Set metadata
-var meta = {
+let meta = {
 	createdAt: new Date(),
 	createdBy: "",
 	updatedAt: new Date(),
 	updatedBy: "",
-	deletedAt: new Date(0),
+	deletedAt: "",
 	deletedBy: ""
 };
-var response = {};
+let response = {};
 response.api = appVer;
 // ---------------------------------
-// Users routes (/users)
+// User routes (/user)
 // ---------------------------------
-routes.get("/", function(req, res) {
-	Users.find({"meta.deletedBy": ""}, function(err, users) {
+router.get("/", (req, res) => {
+	User.find({"meta.deletedBy": ""}, (err, users) => {
 		if (err) {
 			res.send(err);
 		}
@@ -31,8 +32,8 @@ routes.get("/", function(req, res) {
 	});
 });
 
-routes.get("/:userId", function(req, res) {
-	Users.findOne({_id: req.params.userId}, function(err, users) {
+router.get("/:userId", (req, res) => {
+	User.findOne({_id: req.params.userId}, (err, user) => {
 		if (err) {
 			res.send(err);
 		}
@@ -44,8 +45,8 @@ routes.get("/:userId", function(req, res) {
 	});
 });
 
-routes.put("/", function(req, res) {
-	Users.findByIdAndUpdate(req.body._id, req.body, { new: true }, function(err, user) {
+router.put("/", (req, res) => {
+	User.findByIdAndUpdate(req.body._id, req.body, { new: true }, (err, user) => {
 		if (err) {
 			res.send(err);
 		}
@@ -57,20 +58,20 @@ routes.put("/", function(req, res) {
 	});
 });
 
-routes.post("/", function(req, res) {
-	var newUser = {};
+router.post("/", (req, res) => {
+	let newUser = {};
 	newUser.meta = meta;
 	newUser.data = req.body;
-	Users.findOneAndUpdate({"data.userId": req.body.userId, "meta.deletedBy": ""}, newUser, {upsert: true, new: true, runValidators: true}, function(err, users) {
+	User.findOneAndUpdate({"data.userId": req.body.userId, "meta.deletedBy": ""}, newUser, {upsert: true, new: true, runValidators: true}, (err, user) => {
 		if (err) {
 			res.send(err);
 		}
 		else {
-			response.data = users.ops;
+			response.data = user.ops;
 			response.notification = codeDictionary.MDB0002;
 			res.send(response);
 		}
 	});
 });
 
-module.exports = routes;
+module.exports = router;

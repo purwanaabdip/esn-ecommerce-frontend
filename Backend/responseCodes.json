@@ -1,4 +1,14 @@
 {
+	"ACC0001": {
+		"type": "success",
+		"message": "Successfully registered",
+		"code": "ACC0001"
+	},
+	"ACC0002": {
+		"type": "success",
+		"message": "Successfully logged in",
+		"code": "ACC0002"
+	},
 	"MDB0001": {
 		"type": "success",
 		"message": "Successfully fetched",

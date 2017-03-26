@@ -1,19 +1,17 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 10/12/2016.
-// ================================
-import React from 'react';
-import { Link } from 'react-router';
+"use strict"
 
-import ItemDetail from './item-detail';
-import ButtonProcess from './button-process';
-import Rating from './rating';
+import React from 'react'
+import { Link } from 'react-router'
+
+import ItemDetail from './item-detail'
+import ButtonProcess from './button-process'
+import Rating from './rating'
 
 export default class Item extends React.Component {
 	showDetails() {
 		$("#" + this.props.id).modal({
 			blurring: true
-		}).modal('show');
+		}).modal('show')
 	}
   render() {
     return (

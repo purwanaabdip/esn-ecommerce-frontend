@@ -1,8 +1,6 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 01/02/2017.
-// ================================
-import React from 'react';
+"use strict"
+
+import React from "react"
 
 export default class Footer extends React.Component {
     render() {

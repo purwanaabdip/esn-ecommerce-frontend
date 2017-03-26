@@ -1,141 +1,124 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 01/02/2017.
-// ================================
-import React from "react";
+"use strict"
 
-import ItemStore from '../../stores/item-store';
-import * as ItemActions from "../../actions/item-actions";
+import React from "react"
+import { connect } from "react-redux"
 
+import * as ItemActions from "../../actions/item-actions"
+
+// Connect to reducer
+@connect((store) => {
+	return {
+		item: store.item.item,
+		activity: store.item.activity,
+		loading: store.item.loading
+	}
+})
 export default class ItemManagementForm extends React.Component {
-	constructor() {
-		super();
-		this.submitForm = this.submitForm.bind(this);
-		this.closeForm = this.closeForm.bind(this);
-		this.refresh = this.refresh.bind(this);
-		this.state = ItemStore.getState();
-	}
-	componentWillMount() {
-		ItemStore.on('change_item', this.refresh);
-	}
-  componentDidMount() {
-		// Form validator
+	componentDidMount() {
+		// Form validator initialization
 		$(".ui.form").form({
-	    fields: {
-	      itemId : "empty",
-	      itemName : "empty",
-	      itemPrice : "empty",
-	      itemStock : "empty",
-	      itemImage : "empty",
-	      itemDescription : "empty",
-	    }
-	  });
-  }
+			fields: {
+				itemId : "empty",
+				itemName : "empty",
+				itemPrice : "empty",
+				itemStock : "empty",
+				itemImage : "empty",
+				itemDescription : "empty",
+			}
+		})
+	}
 	componentWillUnmount() {
 		// When leaving page, remove the modal from DOM to prevent duplicates
-		$(".ui.dimmer.modals.page").remove();
+		$(".ui.dimmer.modals.page").remove()
 	}
-	refresh() {
-		this.state = ItemStore.getState();
-		this.setState(this.state);
-		if (this.state.item._id) {
-			$("#item-form").form("set values", {
-				itemId : this.state.item.data.itemId,
-				itemName : this.state.item.data.itemName,
-				itemPrice : this.state.item.data.itemPrice,
-				itemStock : this.state.item.data.itemStock,
-				itemImage : this.state.item.data.itemImage,
-				itemDescription : this.state.item.data.itemDescription
-			});
-		}
-		else {
-			$("#item-form").form("set values", {
-				itemId : "",
-				itemName : "",
-				itemPrice : "",
-				itemStock : "",
-				itemImage : "",
-				itemDescription : ""
-			});
-		}
-		$(".ui.modal").modal("show");
-	}
-	// Modal actions (show, submit, hide)
   submitForm() {
-		const activity = this.state.activity;
+		const activity = this.props.activity
 		// Check if all fields are valid
 		if ($("#item-form").form("is valid")) {
 			// Initialize item object to send
-			let item = this.state.item;
+			let item = this.props.item
 	    // Iterate each input, store value to body object
-	    $(".form :input").each(function(){
-	      let input = $(this);
+	    $("#item-form :input").map(function() {
+	      let input = $(this)
 				if (activity == "insert") {
-		      item[input.attr("id")] = input.val();
+		      item[input.attr("id")] = input.val()
 				} else {
-					item.data[input.attr("id")] = input.val();
+					item.data[input.attr("id")] = input.val()
 				}
-	    });
+	    })
 			switch (activity) {
 				case "insert" : {
-					ItemActions.insertItem(item);
-					break;
+					this.props.dispatch(ItemActions.insertItem(item))
+					break
 				}
 				case "edit" : {
-					ItemActions.editItem(item);
-					break;
+					this.props.dispatch(ItemActions.editItem(item))
+					break
 				}
 				case "delete" : {
-					ItemActions.deleteItem(item);
-					break;
+					this.props.dispatch(ItemActions.deleteItem(item))
+					break
 				}
 			}
-			this.closeForm();
 		}
   }
 	closeForm() {
-		$(".ui.modal").modal("hide");
+		$(".ui.modal").modal("hide")
 	}
-	insertItem(item) {
-		ItemActions.insertItem(item);
+	isDelete() {
+		if (this.props.activity === "delete") {
+			return " disabled"
+		} else {
+			return ""
+		}
 	}
-	editItem(item) {
-		ItemActions.editItem(item);
-	}
-	deleteItem(item) {
-		ItemActions.deleteItem(item);
+	isLoading() {
+		if (this.props.loading === true) {
+			return " loading"
+		} else {
+			return ""
+		}
 	}
   render() {
-		const context = this;
-		const item = this.state.item;
-		const activity = this.state.activity;
-		const modalTitle = (function() {
+		// Populate form values
+		$("#item-form").form("set values", {
+			itemId : this.props.item.data ? this.props.item.data.itemId : "",
+			itemName : this.props.item.data ? this.props.item.data.itemName : "",
+			itemPrice : this.props.item.data ? this.props.item.data.itemPrice : "",
+			itemStock : this.props.item.data ? this.props.item.data.itemStock : "",
+			itemImage : this.props.item.data ? this.props.item.data.itemImage : "",
+			itemDescription : this.props.item.data ? this.props.item.data.itemDescription : ""
+		})
+		const submitForm = this.submitForm.bind(this)
+		const item = this.props.item
+		const activity = this.props.activity
+		const modalTitle = (() => {
 			if (activity) {
 				switch (activity) {
-					case "insert" : return "Add new item";
-					case "edit"		: return "Edit item";
-					case "delete" : return "Delete item";
+					case "insert" : return "Add new item"
+					case "edit"		: return "Edit item"
+					case "delete" : return "Delete item"
 				}
 			}
-		})();
-		const itemImage = (function() {
+		})()
+		const itemImage = (() => {
 			if (activity) {
 				switch (activity) {
-					case "insert" : return <img className="ui image medium" src="../../themes/default/assets/images/image-placeholder.png" />;
-					case "edit"		: return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />;
-					case "delete" : return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />;
+					case "insert" : return <img className="ui image medium" src="../../themes/default/assets/images/image-placeholder.png" />
+					case "edit"		: return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />
+					case "delete" : return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />
 				}
 			}
-		})();
-		const actionButton = (function() {
+		})()
+		const actionButton = (() => {
 			if (activity) {
 				switch (activity) {
-					case "insert" : return <div className="ui green button" onClick={context.submitForm}>Create</div>;
-					case "edit"		: return <div className="ui blue button" onClick={context.submitForm}>Update</div>;;
-					case "delete" : return <div className="ui red button" onClick={context.submitForm}>Delete</div>;;
+					case "insert" : return <div className="ui green button" onClick={submitForm}>Create</div>
+					case "edit"		: return <div className="ui blue button" onClick={submitForm}>Update</div>
+					case "delete" : return <div className="ui red button" onClick={submitForm}>Delete</div>
 				}
 			}
-		})();
+		})()
     return (
       <div className="ui modal">
         <i className="close icon"></i>
@@ -147,8 +130,8 @@ export default class ItemManagementForm extends React.Component {
             {itemImage}
           </div>
           <div className="description">
-            <form className="ui form" id="item-form">
-              <div className="two fields">
+            <form className={"ui form" + this.isLoading()} id="item-form">
+              <div className={"two fields" + this.isDelete()}>
                 <div className="required field">
                   <label>Item ID</label>
                   <input type="text" placeholder="Item ID" id="itemId"/>
@@ -158,7 +141,7 @@ export default class ItemManagementForm extends React.Component {
                   <input type="text" placeholder="Item Name" id="itemName"/>
                 </div>
               </div>
-              <div className="three fields">
+              <div className={"three fields" + this.isDelete()}>
                 <div className="required field">
                   <label>Price</label>
                   <input type="number" placeholder="Price" id="itemPrice"/>
@@ -172,7 +155,7 @@ export default class ItemManagementForm extends React.Component {
                   <input type="text" placeholder="Image" id="itemImage"/>
                 </div>
               </div>
-              <div className="required field">
+              <div className={"required field" + this.isDelete()}>
                 <label>Description</label>
                 <textarea placeholder="Description" id="itemDescription"/>
               </div>

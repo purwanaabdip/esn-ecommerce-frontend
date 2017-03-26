@@ -1,68 +1,70 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 01/21/2017.
-// ================================
-import axios from 'axios';
-import dispatcher from '../dispatcher';
+"use strict"
 
-const url = 'http://localhost:3000/items';
+import axios from "axios"
 
+const url = "http://localhost:3000/item"
 // Get all items
-export function getItems() {
-	dispatcher.dispatch({type: 'xhr_start'});
-	axios.get(url).then(function(response){
-		dispatcher.dispatch({type: 'get_items', data: response.data.data});
-	}).catch(function(error){
-		console.log(error);
-	});
+export const getItems = () => {
+	return dispatch => {
+		dispatch({type: "xhr_start"})
+		axios.get(url)
+			.then(response => dispatch({type: "get_items", payload: response.data.data}))
+			.catch(error => dispatch({type: "get_items", payload: error}))
+	}
 }
 
 // Insert item preparation
-export function prepInsertItem(item) {
-	dispatcher.dispatch({type: 'prep_insert_item', data: item});
+export const prepInsertItem = item => {
+	return dispatch => dispatch({type: "prep_insert_item", payload: item})
 }
 
 // Insert new item
-export function insertItem(item) {
-	dispatcher.dispatch({type: 'xhr_start'});
-	axios.post(url, item).then(function(response){
-		getItems();
-		dispatcher.dispatch({type: 'insertSuccessful'});
-	}).catch(function(error){
-		console.log(error);
-	});
+export const insertItem = item => {
+	return dispatch => {
+		dispatch({type: "xhr_start"})
+		axios.post(url, item)
+			.then(response => {
+				getItems()
+				dispatch({type: "insert_successful"})
+			})
+			.catch(error => console.log(error))
+	}
 }
 
 // Edit item preparation
-export function prepEditItem(item) {
-	dispatcher.dispatch({type: 'prep_edit_item', data: item});
+export const prepEditItem = item => {
+	return dispatch => dispatch({type: "prep_edit_item", payload: item})
 }
 
 // Edit item
-export function editItem(item) {
-	dispatcher.dispatch({type: 'xhr_start'});
-	axios.put(url, item).then(function(response){
-		getItems();
-		dispatcher.dispatch({type: 'editSuccessful'});
-	}).catch(function(error){
-		console.log(error);
-	});
+export let editItem = item => {
+	return dispatch => {
+		dispatch({type: "xhr_start"})
+		axios.put(url, item)
+			.then(response => {
+				getItems()
+				dispatch({type: "edit_successful"})
+			})
+			.catch(error => console.log(error))
+	}
 }
 
 // Delete item preparation
-export function prepDeleteItem(item) {
-	dispatcher.dispatch({type: 'prep_delete_item', data: item});
+export const prepDeleteItem = item => {
+	return dispatch => dispatch({type: "prep_delete_item", payload: item})
 }
 
 // Delete item
-export function deleteItem(item) {
-	dispatcher.dispatch({type: 'xhr_start'});
-	item.meta.deletedAt = new Date();
-	item.meta.deletedBy = "58834b9567c5f223888d2e5b";
-	axios.put(url, item).then(function(response){
-		getItems();
-		dispatcher.dispatch({type: 'deleteSuccessful'});
-	}).catch(function(error){
-		console.log(error);
-	});
+export const deleteItem = item => {
+	return dispatch => {
+		dispatch({type: "xhr_start"})
+		item.meta.deletedAt = new Date()
+		item.meta.deletedBy = "58834b9567c5f223888d2e5b"
+		axios.put(url, item)
+			.then(response => {
+				getItems()
+				dispatch({type: "delete_successful"})
+			})
+			.catch(error => console.log(error))
+	}
 }

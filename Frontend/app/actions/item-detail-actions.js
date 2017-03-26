@@ -1,17 +1,14 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 1/21/2017.
-// ================================
-import axios from 'axios';
-import dispatcher from '../dispatcher';
+"use strict"
 
+import axios from "axios"
+
+const url = "http://localhost:3000/item/"
 // Get individual item
-export function getItem(id) {
-  dispatcher.dispatch({type: 'xhr_start'});
-	const url = 'http://localhost:3000/item/' + id;
-	axios.get(url).then(function(response){
-		dispatcher.dispatch({type: 'get_item', data: response.data.data});
-	}).catch(function(error){
-		console.log(error);
-	});
+export const getItem = id => {
+  return dispatch => {
+    dispatch({type: "xhr_start"})
+  	axios.get(url + id)
+      .then(response => dispatch({type: "get_item", payload: response.data.data}))
+      .catch(error => console.log(error))
+  }
 }

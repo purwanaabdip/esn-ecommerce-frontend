@@ -1,10 +1,8 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 18/10/2016.
-// ================================
-import React from 'react';
+"use strict"
 
-import Breadcrumb from './breadcrumb';
+import React from "react"
+
+import Breadcrumb from "./breadcrumb"
 
 export default class UserInfo extends React.Component {
     render() {

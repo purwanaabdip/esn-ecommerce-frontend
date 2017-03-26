@@ -1,8 +1,6 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 01/22/2017.
-// ================================
-import React from 'react';
+"use strict"
+
+import React from "react"
 
 export default class Loader extends React.Component {
   render() {

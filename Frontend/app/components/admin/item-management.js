@@ -1,76 +1,55 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 26/01/2017.
-// ================================
-import React from 'react';
+"use strict"
 
-import Breadcrumb from '../breadcrumb';
-import Loader from '../loader';
-import ItemManagementForm from './item-management-form';
+import React from "react"
+import { connect } from "react-redux"
 
-import ItemStore from '../../stores/item-store';
-import * as ItemActions from '../../actions/item-actions';
+import ItemManagementForm from "./item-management-form"
 
+import * as ItemActions from "../../actions/item-actions"
+
+// Connect to reducer
+@connect((store) => {
+	return {
+		items: store.item.items,
+		item: store.item.item,
+		activity: store.item.activity,
+		loading: store.item.loading
+	}
+})
 export default class ItemManagement extends React.Component {
-  constructor() {
-		super();
-		this.getItems = this.getItems.bind(this);
-		this.refresh = this.refresh.bind(this);
-		this.state = ItemStore.getState();
-	}
 	componentWillMount() {
-		ItemStore.on('change', this.refresh);
-		ItemActions.getItems();
-	}
-	componentDidMount() {
-		$('#loader').hide();
-    $('.message .close').on('click', function() {
-      $(this).closest('.message').transition('fade');
-    });
-	}
-	componentWillUnmount() {
-		ItemStore.removeListener('change', this.refresh);
-	}
-	refresh() {
-		this.state = ItemStore.getState();
-		this.setState(this.state);
-		if (this.state.loading) {
-			if ($('#loader').is(":visible") == false) {
-				$('#loader').show();
-			}
-		}
-		else {
-			$('#loader').hide();
-		}
+		this.getItems()
 	}
 	getItems() {
-		ItemActions.getItems();
+		this.props.dispatch(ItemActions.getItems())
 	}
 	prepInsertItem() {
-		ItemActions.prepInsertItem();
+		$(".ui.modal").modal("show")
+		this.props.dispatch(ItemActions.prepInsertItem())
 	}
 	prepEditItem(item) {
-		ItemActions.prepEditItem(item);
+		$(".ui.modal").modal("show")
+		this.props.dispatch(ItemActions.prepEditItem(item))
 	}
 	prepDeleteItem(item) {
-		ItemActions.prepDeleteItem(item);
+		$(".ui.modal").modal("show")
+		this.props.dispatch(ItemActions.prepDeleteItem(item))
 	}
   render() {
-    const state = this.state;
-    const message = (function() {
-      if (state.alert) {
-        return (
-          <div className="ui success message">
-            <i className="close icon"></i>
-            <div className="header">
-              {state.alert}
-            </div>
-          </div>
-        )
-      }
-    })();
+    // const message = (() => {
+    //   if (state.alert) {
+    //     return (
+    //       <div className="ui success message">
+    //         <i className="close icon"></i>
+    //         <div className="header">
+    //           {state.alert}
+    //         </div>
+    //       </div>
+    //     )
+    //   }
+    // })()
 		// Iterate through all items to make Item components
-		const ItemComponents = this.state.items.map((item) => {
+		const ItemComponents = this.props.items.map((item) => {
       return (
         <tr key={item._id} id={item._id}>
           <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
@@ -88,7 +67,7 @@ export default class ItemManagement extends React.Component {
           </td>
         </tr>
       )
-  	});
+  	})
     return (
     	<div className="ui container">
         <table className="ui collapsing table" id="sticky-segment">
@@ -106,7 +85,6 @@ export default class ItemManagement extends React.Component {
             {ItemComponents}
           </tbody>
         </table>
-        {message}
         <div className="fluid large ui button primary" data-position="top center" onClick={this.prepInsertItem.bind(this)}>Add new item</div>
         <div className="ui special popup">Create new item</div>
         <ItemManagementForm />

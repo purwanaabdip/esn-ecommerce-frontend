@@ -1,12 +1,10 @@
-// ================================
-// Created by Eka Setya Nugraha.
-// Copyright 10/12/2016.
-// ================================
-import React from 'react';
+"use strict"
+
+import React from "react"
 
 export default class Rating extends React.Component {
-	componentDidMount() {	
-	    $('.ui.rating').rating({ maxRating: 5 });
+	componentDidMount() {
+	    $(".ui.rating").rating({ maxRating: 5 })
 	}
     render() {
         return (

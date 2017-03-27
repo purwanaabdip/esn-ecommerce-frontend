@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
 var ordersSchema = new Schema({
     meta: {
@@ -22,6 +22,6 @@ var ordersSchema = new Schema({
     data: {
         itemName: String
     }
-});
+})
 
-mongoose.model('orders', ordersSchema);
+mongoose.model('orders', ordersSchema)

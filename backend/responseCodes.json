@@ -9,6 +9,11 @@
 		"message": "Successfully logged in",
 		"code": "ACC0002"
 	},
+	"ACC0003": {
+		"type": "success",
+		"message": "Successfully logged out",
+		"code": "ACC0003"
+	},
 	"MDB0001": {
 		"type": "success",
 		"message": "Successfully fetched",

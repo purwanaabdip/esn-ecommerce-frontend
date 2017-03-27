@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
 
 const Item = new Schema({
 	meta: {
@@ -27,6 +27,6 @@ const Item = new Schema({
 		itemStock: Number,
 		itemDescription: String
 	}
-});
+})
 
-module.exports = mongoose.model("Item", Item);
+module.exports = mongoose.model("Item", Item)

@@ -7,11 +7,11 @@ import Navigation from "../navigation"
 import Footer from "../footer"
 
 export default class AdminRoot extends React.Component {
-    render() {
-        return (
-          <div>
-      			{this.props.children}
-          </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    )
+  }
 }

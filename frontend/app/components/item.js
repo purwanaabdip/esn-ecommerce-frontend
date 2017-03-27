@@ -1,17 +1,17 @@
 "use strict"
 
-import React from 'react'
-import { Link } from 'react-router'
+import React from "react"
+import { Link } from "react-router"
 
-import ItemDetail from './item-detail'
-import ButtonProcess from './button-process'
-import Rating from './rating'
+import ItemDetail from "./item-detail"
+import ButtonProcess from "./button-process"
+import Rating from "./rating"
 
 export default class Item extends React.Component {
 	showDetails() {
 		$("#" + this.props.id).modal({
 			blurring: true
-		}).modal('show')
+		}).modal("show")
 	}
   render() {
     return (
@@ -25,7 +25,7 @@ export default class Item extends React.Component {
 		    </div>
 	    	<div className="header center aligned">{this.props.name}</div>
 	    	<div className="meta center aligned">
-	        	<div className="group">Rp. {this.props.price}</div>
+	        	<div className="group">{this.props.price}</div>
 	    	</div>
 	    </div>
 	    <div className="ui two bottom attached buttons">

@@ -5,43 +5,42 @@ const initialState = {
   items: [],
   item: {},
   activity: "",
-  alert: "",
   loading: false,
-  error: null
+  notification: ""
 }
 
 export default function reducer(state = initialState, action) {
   switch(action.type) {
     case "xhr_start": {
-      return {...state, loading: true}
+      return {...state, loading: true, notification: { type: "Processing", message: "Please wait" }}
       break
     }
     case "get_items": {
-      return {...state, items: action.payload, loading: false}
+      return {...state, items: action.payload, notification: action.notification, loading: false}
       break
     }
     case "prep_insert_item": {
-      return {...state, item: {}, activity: "insert", alert: ""}
+      return {...state, item: {}, activity: "insert"}
       break
     }
     case "insert_successful": {
-      return {...state, alert: "Item successfully created!", loading: false}
+      return {...state, notification: action.notification, loading: false}
       break
     }
     case "prep_edit_item": {
-      return {...state, item: action.payload, activity: "edit", alert: ""}
+      return {...state, item: action.payload, activity: "edit"}
       break
     }
     case "edit_successful": {
-      return {...state, alert: "Item successfully updated!", loading: false}
+      return {...state, notification: action.notification, loading: false}
       break
     }
     case "prep_delete_item": {
-      return {...state, item: action.payload, activity: "delete", alert: ""}
+      return {...state, item: action.payload, activity: "delete"}
       break
     }
     case "delete_successful": {
-      return {...state, alert: "Item successfully deleted!", loading: false}
+      return {...state, notification: action.notification, loading: false}
       break
     }
   }

@@ -7,6 +7,16 @@ import ButtonProcess from "./button-process"
 
 import { getItem } from "../actions/item-detail-actions"
 
+// Currency Formatter
+import currencyFormatter from "currency-formatter"
+const currencyFormat = {
+  symbol: "Rp.",
+  decimal: ",",
+  thousand: ".",
+  precision: 1,
+  format: "%s %v" // %s is the symbol and %v is the value
+}
+
 // Connect to reducer
 @connect((store) => {
 	return {
@@ -27,7 +37,7 @@ export default class ItemDetail extends React.Component {
 		})()
 		const itemPrice = (function() {
 			if (item.data) {
-				return <div className="ui blue sub header">Rp. {item.data.itemPrice}</div>
+				return <div className="ui blue sub header">{currencyFormatter.format(item.data.itemPrice, currencyFormat)}</div>
 			}
 		})()
 		const itemStock = (function() {

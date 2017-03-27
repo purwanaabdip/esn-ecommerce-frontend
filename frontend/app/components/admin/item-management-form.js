@@ -49,19 +49,21 @@ export default class ItemManagementForm extends React.Component {
 			switch (activity) {
 				case "insert" : {
 					this.props.dispatch(ItemActions.insertItem(item))
+					this.closeForm()
 					break
 				}
 				case "edit" : {
 					this.props.dispatch(ItemActions.editItem(item))
+					this.closeForm()
 					break
 				}
 				case "delete" : {
 					this.props.dispatch(ItemActions.deleteItem(item))
+					this.closeForm()
 					break
 				}
 			}
 		}
-		this.closeForm()
   }
 	closeForm() {
 		$(".ui.modal").modal("hide")
@@ -114,9 +116,9 @@ export default class ItemManagementForm extends React.Component {
 		const actionButton = (() => {
 			if (activity) {
 				switch (activity) {
-					case "insert" : return <div className="ui green button" onClick={submitForm}>Create</div>
-					case "edit"		: return <div className="ui blue button" onClick={submitForm}>Update</div>
-					case "delete" : return <div className="ui red button" onClick={submitForm}>Delete</div>
+					case "insert" : return <div className="ui right floted green button" onClick={submitForm}>Create</div>
+					case "edit"		: return <div className="ui right floted blue button" onClick={submitForm}>Update</div>
+					case "delete" : return <div className="ui right floted red button" onClick={submitForm}>Delete</div>
 				}
 			}
 		})()
@@ -160,11 +162,13 @@ export default class ItemManagementForm extends React.Component {
                 <label>Description</label>
                 <textarea placeholder="Description" id="itemDescription"/>
               </div>
-		          <div className="ui cancel button" onClick={this.closeForm}>Cancel</div>
-		          {actionButton}
             </form>
           </div>
         </div>
+				<div className="actions">
+					<div className="ui cancel button" onClick={this.closeForm}>Cancel</div>
+					{actionButton}
+				</div>
       </div>
     )
   }

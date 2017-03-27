@@ -7,6 +7,16 @@ import ItemManagementForm from "./item-management-form"
 
 import * as ItemActions from "../../actions/item-actions"
 
+// Currency Formatter
+import currencyFormatter from "currency-formatter"
+const currencyFormat = {
+  symbol: "Rp.",
+  decimal: ",",
+  thousand: ".",
+  precision: 1,
+  format: "%s %v" // %s is the symbol and %v is the value
+}
+
 // Connect to reducer
 @connect((store) => {
 	return {
@@ -14,7 +24,8 @@ import * as ItemActions from "../../actions/item-actions"
 		item: store.item_store.item,
 		activity: store.item_store.activity,
 		loading: store.item_store.loading,
-		alert: store.item_store.alert
+		alert: store.item_store.alert,
+		notification: store.item_store.notification
 	}
 })
 export default class ItemManagement extends React.Component {
@@ -43,7 +54,7 @@ export default class ItemManagement extends React.Component {
           <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
           <td>{item.data.itemId} - {item.data.itemName}</td>
           <td>{item.data.itemDescription}</td>
-          <td>{item.data.itemPrice}</td>
+          <td>{currencyFormatter.format(item.data.itemPrice, {currencyFormat})}</td>
           <td>{item.data.itemStock}</td>
           <td>
             <button className="circular ui icon blue button" title="Edit" onClick={this.prepEditItem.bind(this, item)}>
@@ -75,12 +86,19 @@ export default class ItemManagement extends React.Component {
         </table>
 				{
 					// Alert message
-					this.props.alert !== "" ? (
-						<div className="ui success message">
-		          <i className="close icon"></i>
-		          <div className="header">
-		            {this.props.alert}
-		          </div>
+					this.props.notification !== "" ? (
+						<div className="ui icon success message">
+							{
+								this.props.loading === true ? (
+									<i class="notched circle loading icon"></i>
+								) : ( "" )
+							}
+							<div className="content">
+			          <div className="header">
+			            {this.props.notification.type.charAt(0).toUpperCase() + this.props.notification.type.slice(1)}
+			          </div>
+								<p>{this.props.notification.message}</p>
+							</div>
 		        </div>
 					) : (
 						""

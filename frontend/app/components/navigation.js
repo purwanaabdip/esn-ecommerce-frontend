@@ -36,10 +36,19 @@ export default class Navigation extends React.Component {
     if (this.props.user.username) {
       return (
         <div className="menu" tabIndex="-1">
-          <div className="item" onClick={this.ping.bind(this)}>Account Settings</div>
-          <div className="item">Purchase History</div>
+          <div className="item">
+						<i className="icon setting"></i>
+						Account Settings
+					</div>
+          <div className="item">
+						<i className="icon shopping basket"></i>
+						Purchase History
+					</div>
           <div className="divider"></div>
-          <div className="item" onClick={this.logout.bind(this)}>Logout</div>
+          <div className="item" onClick={this.logout.bind(this)}>
+						Logout
+						<i className="icon sign out"></i>
+					</div>
         </div>
       )
     } else return (

@@ -42,7 +42,9 @@ router.post("/login", (req, res, next) => {
         success: false
       })
     } else {
-      req.login(user, (err) => {
+			req.session.user = req.body.username
+			req.session.save()
+      req.login(user, () => {
 				response.data = req.user
 				response.notification = codeDictionary.ACC0002
         res.send(response)
@@ -65,12 +67,8 @@ router.get("/ping", (req, res) => {
 
 router.post("/logout", (req, res, next) => {
   req.logout()
+	next()
 	response.notification = codeDictionary.ACC0003
-  res.send(response)
-})
-
-router.post("/logout", (req, res) => {
-	response.notification = codeDictionary.ACC0002
   res.send(response)
 })
 

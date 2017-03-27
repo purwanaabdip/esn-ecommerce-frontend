@@ -4,10 +4,10 @@ import axios from "axios"
 
 const url = "http://localhost:3000/item"
 // Get all items
-export const getItems = () => {
+export const getItems = (searchTerm = "") => {
 	return dispatch => {
 		dispatch({type: "xhr_start"})
-		axios.get(url)
+		axios.get(url + "?search=" + searchTerm)
 			.then(response => dispatch({type: "get_items", payload: response.data.data, notification: response.data.notification}))
 			.catch(error => console.log(error))
 	}

@@ -8,6 +8,9 @@ import ButtonProcess from "./button-process"
 import Rating from "./rating"
 
 export default class Item extends React.Component {
+	componentDidMount() {
+		$(".ui.right.corner.red.label").popup()
+	}
 	showDetails() {
 		$("#" + this.props.id).modal({
 			blurring: true
@@ -16,9 +19,12 @@ export default class Item extends React.Component {
   render() {
     return (
     	<div className="card">
-	    <div className="ui image">
+	    	<Link to={"/item/" + this.props.id} className="ui image">
+					<div class="ui right corner red label" data-content="Best seller">
+						<i class="heart icon"></i>
+					</div>
     			<img src={this.props.src}></img>
-    		</div>
+    		</Link>
     		<div className="content">
 		    <div className="extra center aligned">
 		    	<Rating />

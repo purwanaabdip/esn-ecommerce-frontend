@@ -10,6 +10,7 @@ import * as SessionActions from "../actions/session-actions"
 @connect((store) => {
 	return {
 		user: store.user_store.user,
+		categories: store.item_store.categories,
     logging_in: store.user_store.logging_in,
 		logging_out: store.user_store.logging_out
 	}
@@ -29,25 +30,22 @@ export default class Navigation extends React.Component {
       return "loading disabled"
     }
   }
-	ping() {
-		this.props.dispatch(SessionActions.ping())
-	}
   menu() {
     if (this.props.user.username) {
       return (
         <div className="menu" tabIndex="-1">
           <div className="item">
-						<i className="icon setting"></i>
+						<i className="violet setting icon"></i>
 						Account Settings
 					</div>
           <div className="item">
-						<i className="icon shopping basket"></i>
+						<i className="green shopping basket icon"></i>
 						Purchase History
 					</div>
           <div className="divider"></div>
           <div className="item" onClick={this.logout.bind(this)}>
+						<i className="sign out icon"></i>
 						Logout
-						<i className="icon sign out"></i>
 					</div>
         </div>
       )
@@ -66,21 +64,19 @@ export default class Navigation extends React.Component {
     )
   }
   render() {
+		const Categories = this.props.categories.map(category => {
+			return (<a key={category} className="item">{category}</a>)
+		})
     return (
       <div className="ui borderless main menu">
         <Link to="/" className="header item">
-          <img className="logo" src="/themes/default/assets/images/favicon.png"/>
+          <i className="big blue home icon"></i>
           Kocak Store
         </Link>
         <div className="ui simple dropdown item" tabIndex="0">Categories
           <i className="dropdown icon"></i>
           <div className="menu" tabIndex="-1">
-            <a className="item">Playstation 3</a>
-            <a className="item">Playstation 4</a>
-            <a className="item">Xbox 360</a>
-            <a className="item">Xbox One</a>
-            <a className="item">Nintendo WiiU</a>
-            <a className="item">Nintendo 3DS</a>
+						{Categories}
           </div>
         </div>
         <div className="right menu">
@@ -91,12 +87,12 @@ export default class Navigation extends React.Component {
             </div>
           </div>
           <div className="ui simple dropdown item" tabIndex="0">
-            <i className="icon user"></i>
+            <i className="blue user icon"></i>
             <span>{this.props.user.username ? "Welcome, " + this.props.user.username : "Login"}</span>
             {this.menu()}
           </div>
           <a className="item" id="cart-sidebar">
-            <i className="icon cart"></i>
+            <i className="cart icon teal"></i>
             <span>My cart</span>
             <div className="ui teal circular label">2</div>
           </a>

@@ -4,6 +4,7 @@
 const initialState = {
   items: [],
   item: {},
+  categories: [],
   activity: "",
   loading: false,
   notification: ""
@@ -16,7 +17,13 @@ export default function reducer(state = initialState, action) {
       break
     }
     case "get_items": {
-      return {...state, items: action.payload, notification: action.notification, loading: false}
+      // Build categories from item ID
+      let categories = action.payload.reduce((cat, data) => {
+        let category = data.data.itemId.substring(0,3)
+        if (!cat.includes(category)) cat.push(category)
+        return cat
+      }, [])
+      return {...state, items: action.payload, categories: categories, notification: "", loading: false}
       break
     }
     case "prep_insert_item": {

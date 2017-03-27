@@ -8,9 +8,9 @@ import * as ItemActions from "../../actions/item-actions"
 // Connect to reducer
 @connect((store) => {
 	return {
-		item: store.item.item,
-		activity: store.item.activity,
-		loading: store.item.loading
+		item: store.item_store.item,
+		activity: store.item_store.activity,
+		loading: store.item_store.loading
 	}
 })
 export default class ItemManagementForm extends React.Component {
@@ -61,6 +61,7 @@ export default class ItemManagementForm extends React.Component {
 				}
 			}
 		}
+		this.closeForm()
   }
 	closeForm() {
 		$(".ui.modal").modal("hide")

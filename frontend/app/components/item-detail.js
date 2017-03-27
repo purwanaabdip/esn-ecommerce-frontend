@@ -10,8 +10,8 @@ import { getItem } from "../actions/item-detail-actions"
 // Connect to reducer
 @connect((store) => {
 	return {
-		item: store.itemDetail.item,
-		loading: store.itemDetail.loading
+		item: store.item_detail_store.item,
+		loading: store.item_detail_store.loading
 	}
 })
 export default class ItemDetail extends React.Component {
@@ -19,7 +19,6 @@ export default class ItemDetail extends React.Component {
 		this.props.dispatch(getItem(this.props.params.itemId))
 	}
 	render() {
-		console.log(this.props.item)
 		const item = this.props.item
 		const itemImage = (function() {
 			if (item.data) {
@@ -71,8 +70,7 @@ export default class ItemDetail extends React.Component {
 					</div>
         </div>
 				<div className="actions">
-					<div className="ui deny button">Cancel</div>
-			    	<ButtonProcess id={this.props.id} label="Add to cart" />
+		    	<ButtonProcess id={this.props.id} label="Add to cart" />
 				</div>
 			</div>
 		)

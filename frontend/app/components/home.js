@@ -11,8 +11,8 @@ import { getItems } from "../actions/item-actions"
 // Connect to reducer
 @connect((store) => {
 	return {
-		items: store.item.items,
-		loading: store.item.loading
+		items: store.item_store.items,
+		loading: store.item_store.loading
 	}
 })
 export default class Home extends React.Component {

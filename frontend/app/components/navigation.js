@@ -2,22 +2,57 @@
 
 import React from "react"
 import { Link } from "react-router"
+import { connect } from "react-redux"
 
 import * as SessionActions from "../actions/session-actions"
 
+// Connect to reducer
+@connect((store) => {
+	return {
+		user: store.user_store.user,
+    logging_in: store.user_store.logging_in,
+		logging_out: store.user_store.logging_out
+	}
+})
 export default class Navigation extends React.Component {
   componentDidMount() {
     $("#cart-sidebar").click((event) => $(".ui.sidebar").sidebar("toggle"))
   }
-
   login() {
-    SessionActions.login($("#username").val(), $("#password").val())
+    this.props.dispatch(SessionActions.login($("#username").val(), $("#password").val()))
   }
-
   logout() {
-    SessionActions.logout()
+    this.props.dispatch(SessionActions.logout())
   }
-
+  isLoggingIn() {
+    if (this.props.logging_in === true) {
+      return "loading disabled"
+    }
+  }
+  menu() {
+    if (this.props.user.username) {
+      return (
+        <div className="menu" tabIndex="-1">
+          <div className="item">Account Settings</div>
+          <div className="item">Purchase History</div>
+          <div className="divider"></div>
+          <div className="item" onClick={this.logout.bind(this)}>Logout</div>
+        </div>
+      )
+    } else return (
+      <div className="menu" tabIndex="-1">
+        <div className="ui input">
+          <input id="username" type="text" placeholder="Username"/>
+        </div>
+        <div className="ui input">
+          <input id="password" type="password" placeholder="Password"/>
+        </div>
+        <div className="ui input">
+          <button className={"fluid ui primary button " + this.isLoggingIn()} onClick={this.login.bind(this)}>Login</button>
+        </div>
+      </div>
+    )
+  }
   render() {
     return (
       <div className="ui borderless main menu">
@@ -45,22 +80,8 @@ export default class Navigation extends React.Component {
           </div>
           <div className="ui simple dropdown item" tabIndex="0">
             <i className="icon user"></i>
-            <span>Login</span>
-            <div className="menu" tabIndex="-1">
-              <div className="ui input">
-                <input id="username" type="text" placeholder="Username"/>
-              </div>
-              <div className="ui input">
-                <input id="password" type="password" placeholder="Password"/>
-              </div>
-              <div className="ui input">
-                <button className="fluid ui primary button" onClick={this.login}>Login</button>
-              </div>
-              <div className="item">Account Settings</div>
-              <div className="item">Purchase History</div>
-              <div className="divider"></div>
-              <div className="item" onClick={this.logout}>Logout</div>
-            </div>
+            <span>{this.props.user.username ? "Welcome, " + this.props.user.username : "Login"}</span>
+            {this.menu()}
           </div>
           <a className="item" id="cart-sidebar">
             <i className="icon cart"></i>

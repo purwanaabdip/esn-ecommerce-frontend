@@ -23,7 +23,7 @@ export default function reducer(state = initialState, action) {
       break
     }
     case "logout_successful": {
-      return {...state, user: action.payload, logging_out: false}
+      return {...state, user: {}, logging_out: false}
       break
     }
   }

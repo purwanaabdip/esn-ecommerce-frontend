@@ -10,10 +10,11 @@ import * as ItemActions from "../../actions/item-actions"
 // Connect to reducer
 @connect((store) => {
 	return {
-		items: store.item.items,
-		item: store.item.item,
-		activity: store.item.activity,
-		loading: store.item.loading
+		items: store.item_store.items,
+		item: store.item_store.item,
+		activity: store.item_store.activity,
+		loading: store.item_store.loading,
+		alert: store.item_store.alert
 	}
 })
 export default class ItemManagement extends React.Component {
@@ -36,19 +37,6 @@ export default class ItemManagement extends React.Component {
 		this.props.dispatch(ItemActions.prepDeleteItem(item))
 	}
   render() {
-    // const message = (() => {
-    //   if (state.alert) {
-    //     return (
-    //       <div className="ui success message">
-    //         <i className="close icon"></i>
-    //         <div className="header">
-    //           {state.alert}
-    //         </div>
-    //       </div>
-    //     )
-    //   }
-    // })()
-		// Iterate through all items to make Item components
 		const ItemComponents = this.props.items.map((item) => {
       return (
         <tr key={item._id} id={item._id}>
@@ -85,6 +73,19 @@ export default class ItemManagement extends React.Component {
             {ItemComponents}
           </tbody>
         </table>
+				{
+					// Alert message
+					this.props.alert !== "" ? (
+						<div className="ui success message">
+		          <i className="close icon"></i>
+		          <div className="header">
+		            {this.props.alert}
+		          </div>
+		        </div>
+					) : (
+						""
+					)
+				}
         <div className="fluid large ui button primary" data-position="top center" onClick={this.prepInsertItem.bind(this)}>Add new item</div>
         <div className="ui special popup">Create new item</div>
         <ItemManagementForm />

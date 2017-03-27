@@ -108,8 +108,8 @@ export default class ItemManagementForm extends React.Component {
 			if (activity) {
 				switch (activity) {
 					case "insert" : return <img className="ui image medium" src="../../themes/default/assets/images/image-placeholder.png" />
-					case "edit"		: return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />
-					case "delete" : return <img className="ui image medium" src={"../../themes/default/assets/images/" + item.data.itemImage} />
+					case "edit"		: return <img className="ui image medium" src={"../../uploads/" + item.data.itemImage} />
+					case "delete" : return <img className="ui image medium" src={"../../uploads/" + item.data.itemImage} />
 				}
 			}
 		})()

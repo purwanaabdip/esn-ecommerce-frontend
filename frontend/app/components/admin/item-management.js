@@ -64,7 +64,7 @@ export default class ItemManagement extends React.Component {
       return (
         <div key={item._id} id={item._id} className="item">
           <Link to={"/item/" + item._id} className="ui small image">
-            <img src={"../../themes/default/assets/images/" + item.data.itemImage}></img>
+            <img src={"../../uploads/" + item.data.itemImage}></img>
           </Link>
           <div className="content">
             <Link to={"/item/" + item._id} className="header">{item.data.itemId + " " +  item.data.itemName}</Link>

@@ -32,7 +32,7 @@ export default class ItemDetail extends React.Component {
 		const item = this.props.item
 		const itemImage = (function() {
 			if (item.data) {
-				return <img src={"../themes/default/assets/images/" + item.data.itemImage} />
+				return <img src={"../uploads/" + item.data.itemImage} />
 			}
 		})()
 		const itemPrice = (function() {

@@ -39,7 +39,7 @@ export default class Home extends React.Component {
 	}
 	renderItem(item) {
 		// Item component
-		return <Item key={item._id} id={item._id} src={"../themes/default/assets/images/" + item.data.itemImage} name={item.data.itemName} price={currencyFormatter.format(item.data.itemPrice, currencyFormat)} description={item.data.itemDescription}/>
+		return <Item key={item._id} id={item._id} src={"../uploads/" + item.data.itemImage} name={item.data.itemName} price={currencyFormatter.format(item.data.itemPrice, currencyFormat)} description={item.data.itemDescription}/>
 	}
   render() {
     return (

@@ -26,6 +26,10 @@ export default function reducer(state = initialState, action) {
       return {...state, user: {}, logging_out: false}
       break
     }
+    case "ping_successful": {
+      return {...state, user: action.payload}
+      break
+    }
   }
   return state
 }

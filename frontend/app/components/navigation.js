@@ -29,11 +29,14 @@ export default class Navigation extends React.Component {
       return "loading disabled"
     }
   }
+	ping() {
+		this.props.dispatch(SessionActions.ping())
+	}
   menu() {
     if (this.props.user.username) {
       return (
         <div className="menu" tabIndex="-1">
-          <div className="item">Account Settings</div>
+          <div className="item" onClick={this.ping.bind(this)}>Account Settings</div>
           <div className="item">Purchase History</div>
           <div className="divider"></div>
           <div className="item" onClick={this.logout.bind(this)}>Logout</div>

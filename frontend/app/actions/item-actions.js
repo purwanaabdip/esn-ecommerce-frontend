@@ -4,12 +4,12 @@ import axios from "axios"
 
 const url = "http://localhost:3000/item"
 // Get all items
-export const getItems = () => {
+export const getItems = (searchTerm = "") => {
 	return dispatch => {
 		dispatch({type: "xhr_start"})
-		axios.get(url)
-			.then(response => dispatch({type: "get_items", payload: response.data.data}))
-			.catch(error => dispatch({type: "get_items", payload: error}))
+		axios.get(url + "?search=" + searchTerm)
+			.then(response => dispatch({type: "get_items", payload: response.data.data, notification: response.data.notification}))
+			.catch(error => console.log(error))
 	}
 }
 
@@ -23,10 +23,7 @@ export const insertItem = item => {
 	return dispatch => {
 		dispatch({type: "xhr_start"})
 		axios.post(url, item)
-			.then(response => {
-				getItems()
-				dispatch({type: "insert_successful"})
-			})
+			.then(response => dispatch({type: "insert_successful", notification: response.data.notification}))
 			.catch(error => console.log(error))
 	}
 }
@@ -41,10 +38,7 @@ export let editItem = item => {
 	return dispatch => {
 		dispatch({type: "xhr_start"})
 		axios.put(url, item)
-			.then(response => {
-				getItems()
-				dispatch({type: "edit_successful"})
-			})
+			.then(response => dispatch({type: "edit_successful", notification: response.data.notification}))
 			.catch(error => console.log(error))
 	}
 }
@@ -61,10 +55,7 @@ export const deleteItem = item => {
 		item.meta.deletedAt = new Date()
 		item.meta.deletedBy = "58834b9567c5f223888d2e5b"
 		axios.put(url, item)
-			.then(response => {
-				getItems()
-				dispatch({type: "delete_successful"})
-			})
+			.then(response => dispatch({type: "delete_successful", notification: response.data.notification}))
 			.catch(error => console.log(error))
 	}
 }

@@ -1,31 +1,37 @@
 "use strict"
 
-import React from 'react'
-import { Link } from 'react-router'
+import React from "react"
+import { Link } from "react-router"
 
-import ItemDetail from './item-detail'
-import ButtonProcess from './button-process'
-import Rating from './rating'
+import ItemDetail from "./item-detail"
+import ButtonProcess from "./button-process"
+import Rating from "./rating"
 
 export default class Item extends React.Component {
+	componentDidMount() {
+		$(".ui.right.corner.red.label").popup()
+	}
 	showDetails() {
 		$("#" + this.props.id).modal({
 			blurring: true
-		}).modal('show')
+		}).modal("show")
 	}
   render() {
     return (
     	<div className="card">
-	    <div className="ui image">
+	    	<Link to={"/item/" + this.props.id} className="ui image">
+					<div class="ui right corner red label" data-content="Best seller">
+						<i class="heart icon"></i>
+					</div>
     			<img src={this.props.src}></img>
-    		</div>
+    		</Link>
     		<div className="content">
 		    <div className="extra center aligned">
 		    	<Rating />
 		    </div>
 	    	<div className="header center aligned">{this.props.name}</div>
 	    	<div className="meta center aligned">
-	        	<div className="group">Rp. {this.props.price}</div>
+	        	<div className="group">{this.props.price}</div>
 	    	</div>
 	    </div>
 	    <div className="ui two bottom attached buttons">

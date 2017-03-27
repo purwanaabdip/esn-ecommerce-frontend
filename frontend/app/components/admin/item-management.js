@@ -1,11 +1,22 @@
 "use strict"
 
 import React from "react"
+import { Link } from "react-router"
 import { connect } from "react-redux"
 
 import ItemManagementForm from "./item-management-form"
 
 import * as ItemActions from "../../actions/item-actions"
+
+// Currency Formatter
+import currencyFormatter from "currency-formatter"
+const currencyFormat = {
+  symbol: "Rp.",
+  decimal: ",",
+  thousand: ".",
+  precision: 1,
+  format: "%s %v" // %s is the symbol and %v is the value
+}
 
 // Connect to reducer
 @connect((store) => {
@@ -14,15 +25,16 @@ import * as ItemActions from "../../actions/item-actions"
 		item: store.item_store.item,
 		activity: store.item_store.activity,
 		loading: store.item_store.loading,
-		alert: store.item_store.alert
+		alert: store.item_store.alert,
+		notification: store.item_store.notification
 	}
 })
 export default class ItemManagement extends React.Component {
 	componentWillMount() {
 		this.getItems()
 	}
-	getItems() {
-		this.props.dispatch(ItemActions.getItems())
+	getItems(searchTerm = "") {
+		this.props.dispatch(ItemActions.getItems(searchTerm))
 	}
 	prepInsertItem() {
 		$(".ui.modal").modal("show")
@@ -36,51 +48,69 @@ export default class ItemManagement extends React.Component {
 		$(".ui.modal").modal("show")
 		this.props.dispatch(ItemActions.prepDeleteItem(item))
 	}
+  searchItems(event) {
+    this.getItems(event.target.value)
+  }
+  xhrStatus() {
+    return this.props.notification.type ? this.props.notification.type : ""
+  }
+  loadingIndicator() {
+    if (this.props.loading === true) {
+      return "loading"
+    }
+  }
   render() {
 		const ItemComponents = this.props.items.map((item) => {
       return (
-        <tr key={item._id} id={item._id}>
-          <td><img className="ui image small" src={"../../themes/default/assets/images/" + item.data.itemImage}></img></td>
-          <td>{item.data.itemId} - {item.data.itemName}</td>
-          <td>{item.data.itemDescription}</td>
-          <td>{item.data.itemPrice}</td>
-          <td>{item.data.itemStock}</td>
-          <td>
-            <button className="circular ui icon blue button" title="Edit" onClick={this.prepEditItem.bind(this, item)}>
-              <i className="icon edit"></i>
-            </button>
-            <button className="circular ui icon red button" title="Delete" onClick={this.prepDeleteItem.bind(this, item)}>
-              <i className="icon trash"></i>
-            </button>
-          </td>
-        </tr>
+        <div key={item._id} id={item._id} className="item">
+          <Link to={"/item/" + item._id} className="ui small image">
+            <img src={"../../themes/default/assets/images/" + item.data.itemImage}></img>
+          </Link>
+          <div className="content">
+            <Link to={"/item/" + item._id} className="header">{item.data.itemId + " " +  item.data.itemName}</Link>
+            <div className="meta">
+              <span className="price">{currencyFormatter.format(item.data.itemPrice, currencyFormat)}</span>
+              <span className="stock">Stock : {item.data.itemStock}</span>
+            </div>
+            <div style={{textAlign: "justify"}} className="description">{item.data.itemDescription}</div>
+            <div className="extra">
+              <button className="circular ui icon right floated red button" title="Delete" onClick={this.prepDeleteItem.bind(this, item)}>
+                <i className="icon trash"></i>
+                Delete
+              </button>
+              <button className="circular ui icon right floated blue button" title="Edit" onClick={this.prepEditItem.bind(this, item)}>
+                <i className="icon edit"></i>
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
       )
   	})
     return (
     	<div className="ui container">
-        <table className="ui collapsing table" id="sticky-segment">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Item ID</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ItemComponents}
-          </tbody>
-        </table>
+        <div className={"ui fluid left icon input " + this.loadingIndicator()}>
+          <i className="search icon"></i>
+          <input type="text" placeholder="Search..." onChange={this.searchItems.bind(this)}/>
+        </div>
+        <div className="ui relaxed divided items">
+          {ItemComponents}
+        </div>
 				{
 					// Alert message
-					this.props.alert !== "" ? (
-						<div className="ui success message">
-		          <i className="close icon"></i>
-		          <div className="header">
-		            {this.props.alert}
-		          </div>
+					this.props.notification !== "" ? (
+						<div className={"ui icon message " + this.xhrStatus()}>
+							{
+								this.props.loading === true ? (
+									<i class="notched circle loading icon"></i>
+								) : ( "" )
+							}
+							<div className="content">
+			          <div className="header">
+			            {this.props.notification.type.charAt(0).toUpperCase() + this.props.notification.type.slice(1)}
+			          </div>
+								<p>{this.props.notification.message}</p>
+							</div>
 		        </div>
 					) : (
 						""

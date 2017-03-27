@@ -4,11 +4,11 @@ import React from "react"
 
 export default class Rating extends React.Component {
 	componentDidMount() {
-	    $(".ui.rating").rating({ maxRating: 5 })
+    $(".ui.rating").rating({ maxRating: 5 })
 	}
-    render() {
-        return (
-	    	<div className="ui star rating"></div>
-        )
-    }
+  render() {
+    return (
+  		<div className="ui star rating"></div>
+    )
+  }
 }

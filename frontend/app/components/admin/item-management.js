@@ -60,6 +60,7 @@ export default class ItemManagement extends React.Component {
     }
   }
   render() {
+    if (this.props.notification.type === "success") this.getItems()
 		const ItemComponents = this.props.items.map((item) => {
       return (
         <div key={item._id} id={item._id} className="item">
@@ -69,18 +70,26 @@ export default class ItemManagement extends React.Component {
           <div className="content">
             <Link to={"/item/" + item._id} className="header">{item.data.itemId + " " +  item.data.itemName}</Link>
             <div className="meta">
-              <span className="price">{currencyFormatter.format(item.data.itemPrice, currencyFormat)}</span>
+              <strong className="price">{currencyFormatter.format(item.data.itemPrice, currencyFormat)}</strong>
               <span className="stock">Stock : {item.data.itemStock}</span>
+              {
+                item.data.itemCategory ? (
+                  <div className="ui orange horizontal label">{item.data.itemCategory.toUpperCase()}</div>
+                ) : ( "" )
+              }
+              {
+                item.data.itemGenre ? (
+                  <div className="ui teal horizontal label">{item.data.itemGenre.toUpperCase()}</div>
+                ) : ( "" )
+              }
             </div>
             <div style={{textAlign: "justify"}} className="description">{item.data.itemDescription}</div>
             <div className="extra">
               <button className="circular ui icon right floated red button" title="Delete" onClick={this.prepDeleteItem.bind(this, item)}>
                 <i className="icon trash"></i>
-                Delete
               </button>
               <button className="circular ui icon right floated blue button" title="Edit" onClick={this.prepEditItem.bind(this, item)}>
                 <i className="icon edit"></i>
-                Edit
               </button>
             </div>
           </div>
@@ -112,9 +121,7 @@ export default class ItemManagement extends React.Component {
 								<p>{this.props.notification.message}</p>
 							</div>
 		        </div>
-					) : (
-						""
-					)
+					) : ( "" )
 				}
         <div className="fluid large ui button primary" data-position="top center" onClick={this.prepInsertItem.bind(this)}>Add new item</div>
         <div className="ui special popup">Create new item</div>

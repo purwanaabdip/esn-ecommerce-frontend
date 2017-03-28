@@ -15,6 +15,7 @@ import * as ItemActions from "../../actions/item-actions"
 })
 export default class ItemManagementForm extends React.Component {
 	componentDidMount() {
+		$(".ui.dropdown").dropdown()
 		// Form validator initialization
 		$(".ui.form").form({
 			fields: {
@@ -24,6 +25,8 @@ export default class ItemManagementForm extends React.Component {
 				itemStock : "empty",
 				itemImage : "empty",
 				itemDescription : "empty",
+				itemCategory : "empty",
+				itemGenre : "empty"
 			}
 		})
 	}
@@ -83,15 +86,20 @@ export default class ItemManagementForm extends React.Component {
 		}
 	}
   render() {
-		// Populate form values
-		$("#item-form").form("set values", {
-			itemId : this.props.item.data ? this.props.item.data.itemId : "",
-			itemName : this.props.item.data ? this.props.item.data.itemName : "",
-			itemPrice : this.props.item.data ? this.props.item.data.itemPrice : "",
-			itemStock : this.props.item.data ? this.props.item.data.itemStock : "",
-			itemImage : this.props.item.data ? this.props.item.data.itemImage : "",
-			itemDescription : this.props.item.data ? this.props.item.data.itemDescription : ""
-		})
+		$("#item-form").form("clear")
+		if (this.props.item.data !== undefined) {
+			// Populate form values
+			$("#item-form").form("set values", {
+				itemId : this.props.item.data.itemId,
+				itemName : this.props.item.data.itemName,
+				itemPrice : this.props.item.data.itemPrice,
+				itemStock : this.props.item.data.itemStock,
+				itemImage : this.props.item.data.itemImage,
+				itemDescription : this.props.item.data.itemDescription,
+				itemCategory : this.props.item.data.itemCategory,
+				itemGenre : this.props.item.data.itemGenre
+			})
+		}
 		const submitForm = this.submitForm.bind(this)
 		const item = this.props.item
 		const activity = this.props.activity
@@ -142,6 +150,30 @@ export default class ItemManagementForm extends React.Component {
                 <div className="required field">
                   <label>Item Name</label>
                   <input type="text" placeholder="Item Name" id="itemName"/>
+                </div>
+							</div>
+							<div className={"two fields" + this.isDelete()}>
+                <div className="required field">
+                  <label>Category</label>
+                  <select className="ui fluid dropdown" id="itemCategory">
+										<option value="">Category</option>
+										<option value="playstation4">Playstation 4</option>
+										<option value="playstation3">Playstation 3</option>
+										<option value="nintendo3ds">Nintendo 3DS</option>
+										<option value="xboxone">XBOX One</option>
+										<option value="xbox360">XBOX 360</option>
+									</select>
+                </div>
+                <div className="required field">
+                  <label>Genre</label>
+                  <select className="ui fluid dropdown" id="itemGenre">
+										<option value="">Genre</option>
+										<option value="adventure">Adventure</option>
+										<option value="rpg">RPG</option>
+										<option value="casual">Casual</option>
+										<option value="racing">Racing</option>
+										<option value="action">Action</option>
+									</select>
                 </div>
               </div>
               <div className={"three fields" + this.isDelete()}>

@@ -43,10 +43,10 @@ export default class ItemDetail extends React.Component {
 		const itemStock = (function() {
 			if (item.data) {
 				if (item.data.itemStock > 0) {
-					return <div className="ui green sub header">{"IN STOCK(" + item.data.itemStock + ")"}</div>
+					return <div className="ui green sub header">{"In stock : " + item.data.itemStock}</div>
 				}
 				else {
-					return <div className="ui red sub header">OUT OF STOCK</div>
+					return <div className="ui red sub header">Out of stock</div>
 				}
 			}
 		})()

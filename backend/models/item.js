@@ -25,7 +25,9 @@ const Item = new Schema({
 		itemImage: String,
 		itemPrice: Number,
 		itemStock: Number,
-		itemDescription: String
+		itemDescription: String,
+		itemCategory: String,
+		itemGenre: String
 	}
 })
 

@@ -19,7 +19,7 @@ export default function reducer(state = initialState, action) {
     case "get_items": {
       // Build categories from item ID
       let categories = action.payload.reduce((cat, data) => {
-        let category = data.data.itemId.substring(0,3)
+        let category = data.data.itemCategory
         if (!cat.includes(category)) cat.push(category)
         return cat
       }, [])

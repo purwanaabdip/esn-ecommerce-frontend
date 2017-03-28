@@ -155,13 +155,13 @@ export default class ItemManagementForm extends React.Component {
 							<div className={"two fields" + this.isDelete()}>
                 <div className="required field">
                   <label>Category</label>
-                  <select className="ui fluid dropdown" id="itemCategory">
+                  <select className="ui search selection dropdown" id="itemCategory">
 										<option value="">Category</option>
-										<option value="playstation4">Playstation 4</option>
-										<option value="playstation3">Playstation 3</option>
-										<option value="nintendo3ds">Nintendo 3DS</option>
-										<option value="xboxone">XBOX One</option>
-										<option value="xbox360">XBOX 360</option>
+										<option value="playstation 4">Playstation 4</option>
+										<option value="playstation 3">Playstation 3</option>
+										<option value="nintendo 3ds">Nintendo 3DS</option>
+										<option value="xbox one">XBOX One</option>
+										<option value="xbox 360">XBOX 360</option>
 									</select>
                 </div>
                 <div className="required field">
@@ -169,10 +169,11 @@ export default class ItemManagementForm extends React.Component {
                   <select className="ui fluid dropdown" id="itemGenre">
 										<option value="">Genre</option>
 										<option value="adventure">Adventure</option>
-										<option value="rpg">RPG</option>
+										<option value="action">Action</option>
 										<option value="casual">Casual</option>
 										<option value="racing">Racing</option>
-										<option value="action">Action</option>
+										<option value="rpg">RPG</option>
+										<option value="fps">First Person Shooter</option>
 									</select>
                 </div>
               </div>

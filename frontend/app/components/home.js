@@ -8,16 +8,6 @@ import Loader from "./loader"
 
 import { getItems } from "../actions/item-actions"
 
-// Currency Formatter
-import currencyFormatter from "currency-formatter"
-const currencyFormat = {
-  symbol: "Rp.",
-  decimal: ",",
-  thousand: ".",
-  precision: 1,
-  format: "%s %v" // %s is the symbol and %v is the value
-}
-
 // Connect to reducer
 @connect((store) => {
 	return {
@@ -39,7 +29,7 @@ export default class Home extends React.Component {
 	}
 	renderItem(item) {
 		// Item component
-		return <Item key={item._id} id={item._id} src={"../uploads/" + item.data.itemImage} name={item.data.itemName} price={currencyFormatter.format(item.data.itemPrice, currencyFormat)} description={item.data.itemDescription}/>
+		return <Item key={item._id} id={item._id} item={item.data}/>
 	}
   render() {
     return (

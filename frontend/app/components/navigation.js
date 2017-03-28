@@ -35,7 +35,7 @@ export default class Navigation extends React.Component {
       return (
         <div className="menu" tabIndex="-1">
           <div className="item">
-						<i className="violet setting icon"></i>
+						<i className="violet settings icon"></i>
 						Account Settings
 					</div>
           <div className="item">

@@ -1,0 +1,15 @@
+.ui.segment.footer {
+	margin-top: 1rem;
+	padding-top: 5em;
+	padding-bottom: 5em;
+}
+
+.ui.dropdown .menu>.divider {
+  border-top: 1px solid rgba(34,36,38,.1);
+  height: 0;
+  margin: 0;
+}
+
+.card .content .description, p {
+	text-align: justify;
+}

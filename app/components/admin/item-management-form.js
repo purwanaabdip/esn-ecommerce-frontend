@@ -155,7 +155,7 @@ export default class ItemManagementForm extends React.Component {
 							<div className={"two fields" + this.isDelete()}>
                 <div className="required field">
                   <label>Category</label>
-                  <select className="ui search selection dropdown" id="itemCategory">
+                  <select className="ui fluid dropdown" id="itemCategory">
 										<option value="">Category</option>
 										<option value="playstation 4">Playstation 4</option>
 										<option value="playstation 3">Playstation 3</option>

@@ -17,7 +17,7 @@ import * as SessionActions from "../actions/session-actions"
 })
 export default class Navigation extends React.Component {
   componentDidMount() {
-    $("#cart-sidebar").click((event) => $(".ui.sidebar").sidebar("toggle"))
+    $("#cart-sidebar").click(() => $(".ui.sidebar").sidebar("toggle"))
   }
   login() {
     this.props.dispatch(SessionActions.login($("#username").val(), $("#password").val()))
@@ -65,7 +65,7 @@ export default class Navigation extends React.Component {
   }
   render() {
 		const Categories = this.props.categories.map(category => {
-			return (<a key={category} className="item">{category}</a>)
+			return <a key={category} className="item">{category}</a>
 		})
     return (
       <div className="ui borderless main menu">

@@ -29,7 +29,7 @@ export default class Item extends React.Component {
   render() {
     return (
     	<div className="card">
-	    	<Link to={"/item/" + this.props.item.itemId} className="ui image">
+	    	<Link to={"/item/" + this.props.id} className="ui image">
 					<div class="ui right corner red label" data-content="Best seller">
 						<i class="heart icon"></i>
 					</div>
@@ -55,10 +55,10 @@ export default class Item extends React.Component {
 	    	</div>
 	    </div>
 	    <div className="ui two bottom attached buttons">
-			<Link to={"/item/" + this.props.item.itemId} className="ui button">
+			<Link to={"/item/" + this.props.id} className="ui button">
 				Details
 			</Link>
-			<ButtonProcess id={this.props.item.itemId} label="Add"/>
+			<ButtonProcess id={this.props.id} label="Add"/>
 	    </div>
     	</div>
     )

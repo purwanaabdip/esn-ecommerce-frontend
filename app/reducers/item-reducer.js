@@ -7,6 +7,8 @@ const initialState = {
   categories: [],
   activity: "",
   loading: false,
+  file: {},
+  file_loading: false,
   notification: ""
 }
 
@@ -48,6 +50,10 @@ export default function reducer(state = initialState, action) {
     }
     case "delete_successful": {
       return {...state, notification: action.notification, loading: false}
+      break
+    }
+    case "upload_successful": {
+      return {...state, file: action.payload, notification: action.notification, file_loading: false}
       break
     }
   }

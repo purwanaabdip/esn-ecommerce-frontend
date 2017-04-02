@@ -59,3 +59,15 @@ export const deleteItem = item => {
 			.catch(error => console.log(error))
 	}
 }
+
+// Upload item image
+export const uploadImage = item => {
+	let data = new FormData()
+	data.append("test", item)
+	return dispatch => {
+		dispatch({type: "xhr_start"})
+		axios.post("http://localhost:3000/upload", data)
+			.then(response => dispatch({type: "upload_successful", payload: response.data.data, notification: response.data.notification}))
+			.catch(error => console.log(error))
+	}
+}

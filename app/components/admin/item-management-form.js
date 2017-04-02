@@ -2,6 +2,7 @@
 
 import React from "react"
 import { connect } from "react-redux"
+import Dropzone from "react-dropzone"
 
 import * as ItemActions from "../../actions/item-actions"
 
@@ -10,14 +11,16 @@ import * as ItemActions from "../../actions/item-actions"
 	return {
 		item: store.item_store.item,
 		activity: store.item_store.activity,
-		loading: store.item_store.loading
+		loading: store.item_store.loading,
+		file: store.item_store.file,
+		file_loading: store.item_store.file_loading
 	}
 })
 export default class ItemManagementForm extends React.Component {
 	componentDidMount() {
-		$(".ui.dropdown").dropdown()
+		$(".ui.fluid.dropdown").dropdown()
 		// Form validator initialization
-		$(".ui.form").form({
+		$("#item-form").form({
 			fields: {
 				itemId : "empty",
 				itemName : "empty",
@@ -34,22 +37,27 @@ export default class ItemManagementForm extends React.Component {
 		// When leaving page, remove the modal from DOM to prevent duplicates
 		$(".ui.dimmer.modals.page").remove()
 	}
+	formIsValid() {
+		if (this.props.activity === "delete") {
+			return true
+		} else {
+			return $("#item-form").form("is valid")
+		}
+	}
   submitForm() {
-		const activity = this.props.activity
-		// Check if all fields are valid
-		if ($("#item-form").form("is valid")) {
+		if (this.formIsValid()) {
 			// Initialize item object to send
 			let item = this.props.item
-	    // Iterate each input, store value to body object
-	    $("#item-form :input").map(function() {
-	      let input = $(this)
-				if (activity == "insert") {
-		      item[input.attr("id")] = input.val()
+			// Iterate each input, store value to body object
+			$("#item-form *").filter(":input").each((index, elem) => {
+				let input = $(elem)
+				if (this.props.activity == "insert") {
+					item[input.attr("id")] = input.val()
 				} else {
 					item.data[input.attr("id")] = input.val()
 				}
-	    })
-			switch (activity) {
+			})
+			switch (this.props.activity) {
 				case "insert" : {
 					this.props.dispatch(ItemActions.insertItem(item))
 					this.closeForm()
@@ -85,6 +93,10 @@ export default class ItemManagementForm extends React.Component {
 			return ""
 		}
 	}
+	onDrop(acceptedFile) {
+		$("img.ui.image.medium").attr("src", acceptedFile[0].preview)
+		this.props.dispatch(ItemActions.uploadImage(acceptedFile[0]))
+	}
   render() {
 		$("#item-form").form("clear")
 		if (this.props.item.data !== undefined) {
@@ -99,35 +111,33 @@ export default class ItemManagementForm extends React.Component {
 				itemCategory : this.props.item.data.itemCategory,
 				itemGenre : this.props.item.data.itemGenre
 			})
+		} else {
+			if (this.props.file) {
+				$("#item-form").form("set values", {
+					itemImage : this.props.file.filename
+				})
+			}
 		}
-		const submitForm = this.submitForm.bind(this)
-		const item = this.props.item
-		const activity = this.props.activity
+
 		const modalTitle = (() => {
-			if (activity) {
-				switch (activity) {
-					case "insert" : return "Add new item"
-					case "edit"		: return "Edit item"
-					case "delete" : return "Delete item"
-				}
+			switch (this.props.activity) {
+				case "insert" : return "Add new item"
+				case "edit"		: return "Edit item"
+				case "delete" : return "Delete item"
 			}
 		})()
 		const itemImage = (() => {
-			if (activity) {
-				switch (activity) {
-					case "insert" : return <img className="ui image medium" src="../../themes/default/assets/images/image-placeholder.png" />
-					case "edit"		: return <img className="ui image medium" src={"../../uploads/" + item.data.itemImage} />
-					case "delete" : return <img className="ui image medium" src={"../../uploads/" + item.data.itemImage} />
-				}
+			switch (this.props.activity) {
+				case "insert" : return <img className="ui image medium" src="../../themes/default/assets/images/image-placeholder.png" />
+				case "edit"		: return <img className="ui image medium" src={"../../uploads/" + this.props.item.data.itemImage} />
+				case "delete" : return <img className="ui image medium" src={"../../uploads/" + this.props.item.data.itemImage} />
 			}
 		})()
 		const actionButton = (() => {
-			if (activity) {
-				switch (activity) {
-					case "insert" : return <div className="ui right floted green button" onClick={submitForm}>Create</div>
-					case "edit"		: return <div className="ui right floted blue button" onClick={submitForm}>Update</div>
-					case "delete" : return <div className="ui right floted red button" onClick={submitForm}>Delete</div>
-				}
+			switch (this.props.activity) {
+				case "insert" : return <div className="ui right floted green button" onClick={this.submitForm.bind(this)}>Create</div>
+				case "edit"		: return <div className="ui right floted blue button" onClick={this.submitForm.bind(this)}>Update</div>
+				case "delete" : return <div className="ui right floted red button" onClick={this.submitForm.bind(this)}>Delete</div>
 			}
 		})()
     return (
@@ -137,9 +147,9 @@ export default class ItemManagementForm extends React.Component {
           {modalTitle}
         </div>
         <div className="image content">
-          <div className="image">
-            {itemImage}
-          </div>
+					<Dropzone multiple={false} accept="image/*" onDrop={this.onDrop.bind(this)} className="ui image" disableClick={this.props.activity === "delete" ? true : false}>
+						{itemImage}
+          </Dropzone>
           <div className="description">
             <form className={"ui form" + this.isLoading()} id="item-form">
               <div className={"two fields" + this.isDelete()}>

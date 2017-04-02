@@ -22,10 +22,8 @@ const currencyFormat = {
 @connect((store) => {
 	return {
 		items: store.item_store.items,
-		item: store.item_store.item,
 		activity: store.item_store.activity,
 		loading: store.item_store.loading,
-		alert: store.item_store.alert,
 		notification: store.item_store.notification
 	}
 })

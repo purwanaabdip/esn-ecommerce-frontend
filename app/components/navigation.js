@@ -1,7 +1,7 @@
 "use strict"
 
 import React from "react"
-import { Link } from "react-router"
+import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 
 import * as SessionActions from "../actions/session-actions"
@@ -10,12 +10,16 @@ import * as SessionActions from "../actions/session-actions"
 @connect((store) => {
 	return {
 		user: store.user_store.user,
+		notification: store.user_store.notification,
 		categories: store.item_store.categories,
     logging_in: store.user_store.logging_in,
 		logging_out: store.user_store.logging_out
 	}
 })
 export default class Navigation extends React.Component {
+	componentWillMount() {
+		this.props.dispatch(SessionActions.ping())
+	}
   componentDidMount() {
     $("#cart-sidebar").click(() => $(".ui.sidebar").sidebar("toggle"))
   }

@@ -198,7 +198,7 @@ export default class ItemManagementForm extends React.Component {
                 </div>
                 <div className="required field">
                   <label>Image</label>
-                  <input type="text" placeholder="Image" id="itemImage"/>
+                  <input type="text" placeholder="Image" id="itemImage" disabled/>
                 </div>
               </div>
               <div className={"required field" + this.isDelete()}>

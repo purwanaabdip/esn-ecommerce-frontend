@@ -2,9 +2,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
-import { browserHistory, Router, Route, IndexRoute, Link } from "react-router"
+import { BrowserRouter as Router, Route, IndexRoute, Link } from "react-router-dom"
 
-import App from "./components/app"
+import Sidebar from "./components/sidebar"
+import Navigation from "./components/navigation"
+import Footer from "./components/footer"
 import Home from "./components/home"
 import UserInfo from "./components/user-info"
 import ItemDetail from "./components/item-detail"
@@ -17,18 +19,17 @@ import store from "./reducers/store"
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
-    	<Route path="/" component={App}>
-    		<IndexRoute component={Home}></IndexRoute>
-        <Route path="user-info" component={UserInfo}></Route>
-      	<Route path="contact" component={Home}></Route>
-      	<Route path="item/:itemId" component={ItemDetail}></Route>
-        <Route path="admin" component={AdminRoot}>
-        	<Route path="home" component={HomeAdmin}></Route>
-          <Route path="item-management" component={ItemManagement}></Route>
-        </Route>
-      </Route>
+    <Router>
+      <div className="pusher">
+        <Sidebar />
+        <Navigation />
+        {/* Place all routes here */}
+        <Route exact path="/" component={Home}/>
+        <Route path="/admin/item-management" component={ItemManagement}/>
+        <Route path="/item/:itemId" component={ItemDetail}/>
+        <Footer />
+      </div>
     </Router>
   </Provider>,
-  document.getElementById("app")
+  document.body
 )

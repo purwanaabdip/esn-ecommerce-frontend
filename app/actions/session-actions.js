@@ -14,7 +14,9 @@ export const login = (username, password) => {
 			data: { username, password },
 			withCredentials: true
 		})
-		.then(response => dispatch({type: "login_successful", payload: response.data.data}))
+		.then(response => {
+			response.data.data ? dispatch({type: "login_successful", payload: response.data.data, notification: response.data.notification}) : dispatch({type: "login_failed", payload: response.data})
+		})
 		.catch(error => console.log(error))
 	}
 }

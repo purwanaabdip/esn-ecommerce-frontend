@@ -2,8 +2,6 @@
 
 import React from "react"
 
-import Breadcrumb from "./breadcrumb"
-
 export default class UserInfo extends React.Component {
   render() {
     return (

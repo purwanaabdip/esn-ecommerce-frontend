@@ -26,7 +26,7 @@ const currencyFormat = {
 })
 export default class ItemDetail extends React.Component {
 	componentWillMount() {
-		this.props.dispatch(getItem(this.props.params.itemId))
+		this.props.dispatch(getItem(this.props.match.params.itemId))
 	}
 	render() {
 		const item = this.props.item

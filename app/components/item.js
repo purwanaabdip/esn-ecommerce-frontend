@@ -1,7 +1,7 @@
 "use strict"
 
 import React from "react"
-import { Link } from "react-router"
+import { Link } from "react-router-dom"
 
 import ItemDetail from "./item-detail"
 import ButtonProcess from "./button-process"
